@@ -1,0 +1,6 @@
+flowchart LR
+    F("add(1, 2, 3)<br/>all at once") -.->|curry| C
+    subgraph C["a chain of one-argument functions"]
+        direction LR
+        S1("add(1)<br/>waits for b") --> S2("(2)<br/>waits for c") --> S3("(3)<br/>returns 6")
+    end

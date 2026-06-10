@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nonnative
 
-## Getting Started
+an [Obsidian](https://obsidian.md) vault published as a static site on GitHub
+Pages — markdown in, an Obsidian-style reading experience out.
 
-First, run the development server:
+**live site:** https://yoichiojima-2.github.io/nonnative
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## how it works
+
+the vault in [`notes/`](notes) is the single source of truth: a flat folder of
+markdown files connected with `[[wikilinks]]` and grouped with `#tags`
+(`#domain/*`, `#pattern/*`). open it in Obsidian to write; push to `main` to
+publish.
+
+at build time the Next.js app reads the vault and renders it with the features
+that matter for reading:
+
+- markdown with `[[wikilinks]]` and aliased `[[target|label]]`,
+- links to non-existent notes shown as **unresolved** (as Obsidian does),
+- **tag** pages for every `#namespace/tag`,
+- **backlinks** on every note,
+- an interactive **graph view** (global + per-note local),
+- an Obsidian-style **quick-switcher search** (fuzzy, keyboard-driven),
+- a mobile bottom-nav layout and light/dark theme that follows the system.
+
+the engine is generic — it isn't tied to this vault. point it at any flat
+folder of Obsidian markdown by editing [`site.config.ts`](site.config.ts):
+
+```ts
+const siteConfig = {
+  title: "nonnative",            // site name shown in the header
+  tagline: "…",                  // meta description + footer
+  vaultDir: "notes",             // folder of markdown, index.md = home page
+};
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+images referenced by notes live in `<vaultDir>/assets/` and are mirrored into
+`public/assets/` when a build or the dev server starts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+app/          routes: home, /notes/[id], /graph, /tags, /tags/[tag]
+components/   Markdown, Graph (canvas), Sidebar, SiteChrome (nav + search)
+lib/          notes.ts (vault -> data), markdown.ts (wikilink/tag transform)
+notes/        the vault (content)
+site.config.ts  the only file to touch to reuse this for another vault
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## develop
 
-## Learn More
+```bash
+pnpm install
+pnpm dev        # http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+## build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm build      # static export -> ./out
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+when hosting under a subpath (e.g. GitHub Pages project sites), set the prefix:
 
-## Deploy on Vercel
+```bash
+NEXT_PUBLIC_BASE_PATH=/nonnative pnpm build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) builds and deploys
+to GitHub Pages on every push to `main`. enable it once under
+**Settings → Pages → Build and deployment → Source: GitHub Actions**.

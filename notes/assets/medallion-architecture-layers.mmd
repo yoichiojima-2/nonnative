@@ -1,0 +1,11 @@
+flowchart LR
+  src["raw sources\nlogs · events · APIs"]
+  bronze["bronze\nraw ingest\nappend-only · full history"]
+  silver["silver\ncleaned and conformed\ndeduped · typed · joined"]
+  gold["gold\nbusiness aggregates\nKPIs · features · reports"]
+  consumers["consumers\ndashboards · ML · analysts"]
+
+  src -->|"ingest as-is"| bronze
+  bronze -->|"validate and clean"| silver
+  silver -->|"aggregate and model"| gold
+  gold --> consumers

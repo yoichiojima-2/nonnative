@@ -1,0 +1,10 @@
+flowchart TB
+    BB["Big Brother\n(central authority / SPOF)"]
+    BB --> MT["Ministry of Truth\n(history rewriter)"]
+    BB --> ML["Ministry of Love\n(enforcement engine)"]
+    TS["telescreens\n(distributed sensors)"] -->|stream all behavior| ML
+    MT -->|mutates the record| HR["historical record\n(mutable, no audit log)"]
+    ML -->|corrects thoughtcrime| OP["outer-party citizen"]
+    OP --> TS
+    NS["Newspeak\n(schema reduction)"] -->|shrinks expressible state| OP
+    DT["doublethink\n(self-correcting feedback loop)"] -->|eliminates contradictions| OP

@@ -1,0 +1,8 @@
+flowchart LR
+    subgraph broken["direct call — permission error"]
+        H1("human") -->|"denied" | G1(("God"))
+    end
+    subgraph fixed["mediated call — authorized"]
+        H2("human") --> C("Christ<br/>mediator")
+        C -->|"granted"| G2(("God"))
+    end

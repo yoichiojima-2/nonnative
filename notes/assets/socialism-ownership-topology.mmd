@@ -1,0 +1,15 @@
+flowchart TD
+    subgraph cap["capitalism — private ownership"]
+        direction LR
+        own("owner") -->|"controls"| mop1("means of<br/>production")
+        wk1("workers") -->|"labor"| mop1
+        mop1 -->|"surplus"| own
+        mop1 -->|"wages"| wk1
+    end
+    subgraph soc["socialism — collective ownership"]
+        direction LR
+        col("collective") -->|"controls"| mop2("means of<br/>production")
+        wk2("workers") -->|"labor"| mop2
+        mop2 -->|"surplus"| col
+        col -->|"benefit"| wk2
+    end
