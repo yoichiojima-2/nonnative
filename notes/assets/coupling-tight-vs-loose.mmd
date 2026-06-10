@@ -1,0 +1,9 @@
+flowchart LR
+    subgraph tight["tight coupling — a change in B breaks A"]
+        direction LR
+        A1("A") --> B1("B's internals")
+    end
+    subgraph loose["loose coupling — the interface absorbs the change"]
+        direction LR
+        A2("A") --> I("interface") --> B2("B's internals")
+    end

@@ -1,0 +1,10 @@
+flowchart LR
+    U("client") --> LB("load balancer")
+    LB --> APP
+    subgraph APP["app tier — scaled horizontally"]
+        direction TB
+        A1("server")
+        A2("server")
+    end
+    APP --> CA("cache<br/>fast copy, kept close")
+    CA --> DB[("database<br/>single point of failure")]

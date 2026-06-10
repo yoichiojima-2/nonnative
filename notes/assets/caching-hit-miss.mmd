@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant C as caller
+    participant Cache as cache
+    participant S as slow source
+    C->>Cache: get(key)
+    alt hit
+        Cache-->>C: value (fast)
+    else miss
+        Cache->>S: fetch(key)
+        S-->>Cache: value (slow)
+        Cache-->>C: value
+    end

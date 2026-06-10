@@ -1,0 +1,4 @@
+flowchart LR
+    FW("frameworks &amp; drivers<br/>web · db · UI") -->|depends on| AD("interface adapters<br/>controllers · gateways")
+    AD -->|depends on| UC("use cases<br/>application logic")
+    UC -->|depends on| EN("entities<br/>core business rules")

@@ -1,0 +1,12 @@
+flowchart LR
+    subgraph v1["v1 · Tractatus — a strict formal spec"]
+        direction TB
+        Pr("a proposition") -->|pictures 1:1| F("a possible fact")
+    end
+    subgraph v2["v2 · Investigations — meaning is use"]
+        direction TB
+        W(("a word")) --- G1("giving orders")
+        W --- G2("joking")
+        W --- G3("praying")
+    end
+    v1 ==>|"breaking change:<br/>meaning is use, not picturing"| v2

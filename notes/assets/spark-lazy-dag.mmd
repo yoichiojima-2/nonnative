@@ -1,0 +1,6 @@
+flowchart LR
+    subgraph PLAN["transformations — lazy: only a plan (a DAG)"]
+        direction LR
+        R("read<br/>partitioned source") --> F("filter<br/>narrow: stays local") --> G("groupBy<br/>wide: needs a shuffle")
+    end
+    PLAN -->|"an action pulls"| A("show() / write()<br/>now the cluster runs it")

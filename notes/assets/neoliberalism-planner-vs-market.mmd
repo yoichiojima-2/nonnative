@@ -1,0 +1,14 @@
+flowchart LR
+    subgraph central["central planning — one bottleneck"]
+        direction TB
+        P(("central<br/>planner"))
+        A1("farm") <--> P
+        A2("factory") <--> P
+        A3("shop") <--> P
+    end
+    subgraph market["the market — a price protocol"]
+        direction TB
+        B1("farm") <--> B2("factory")
+        B2 <--> B3("shop")
+        B1 <--> B3
+    end
