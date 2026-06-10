@@ -1,56 +1,40 @@
 ---
 domain: computer-science
-patterns: [abstraction, interface]
 ---
 
 # currying
 
-> **in one line:** currying turns a function of many arguments into a chain of single-argument functions — so `f(a, b, c)` becomes `f(a)(b)(c)`, where each call swallows one argument and hands back a function still waiting for the rest.
-
-![a single three-argument call add(1, 2, 3) unfolding into a chain of one-argument functions: add(1) waits for b, then (2) waits for c, then (3) returns 6](assets/currying-chain.svg)
+> **in one line:** currying turns a function that takes multiple arguments at once into a chain of functions that each take one argument at a time — so you can supply arguments piece by piece, whenever they become available.
 
 ## what it is
 
-named after the logician haskell curry. take a function that wants three arguments at once. **curry** it and you get a function that takes the *first* argument and returns a new function — one that takes the *second* and returns yet another, which finally takes the *third* and produces the answer. the work is the same; the *shape* is a chain.
+named after the logician haskell curry. take a function that needs three pieces of information. **curry** it and you get a function that takes the first piece and returns a new function — one that takes the second and returns yet another, which finally takes the third and produces the result. the computation is unchanged; only the shape is different.
 
-```python
-def add(a, b, c):                         # takes all three at once
-    return a + b + c
+### partial application — the practical payoff
 
-def add(a):                               # curried: one argument at a time
-    return lambda b: lambda c: a + b + c
+because each step returns a function, you don't have to supply all arguments at once. you can stop partway and hold onto the half-finished function. fix some arguments now, supply the rest later. this is **partial application**: specializing a general function into a specific one by baking in some of its inputs.
 
-add(1)(2)(3)   # 6  — three calls, each handing one argument down the chain
-```
+a general "add any two numbers" function becomes a specific "add ten to this number" function by fixing the first argument as ten. the specialized version can be passed around, stored, and used wherever that particular operation is needed.
 
-### partial application — the payoff
+### why it exists — the theoretical foundation
 
-because each step *returns a function*, you don't have to supply every argument at once. you can stop partway and keep the half-finished function around. `add(1)` is a perfectly good value: a function that will add 1 to whatever two numbers come later. fixing some arguments now and the rest later is **partial application**, and it's how you specialize a general tool into a specific one:
+in [[lambda|lambda calculus]], every function takes exactly one argument. there is no syntax for a function of multiple arguments. so multi-argument functions are *defined* by currying: a function of two arguments is a one-argument function that returns a one-argument function. currying is not an optional technique in that context — it is the only way to handle more than one input.
 
-```python
-add_ten = adder(10)     # bake in the first argument
-add_ten(5)              # 15 — the rest arrives later
-```
+some programming languages (notably haskell) adopt this by default: every function automatically takes one argument at a time, and partial application works everywhere without requiring any special syntax.
 
-one general `adder` becomes a family of specific functions (`add_ten`, `add_one`, …) just by feeding it different first arguments. it's the same instinct as setting a default in a config and shipping the specialized result.
+## where this falls short
 
-### why it exists at all — one argument is enough
-
-currying isn't just a trick; in some worlds it's the *only* way multi-argument functions exist. in [[lambda|lambda calculus]] every function takes **exactly one argument** — there is no syntax for two. so a "two-argument" function is really a one-argument function that returns another one-argument function. currying is how arity greater than one is *possible* there at all. haskell makes this its default: the type `Int -> Int -> Int` is silently `Int -> (Int -> Int)` — a function returning a function, curried by construction, so partial application just works everywhere without anyone asking for it.
-
-## where the model breaks down
-
-- **it adds no power, only shape.** curried and uncurried forms compute the identical result; in most languages currying is pure ergonomics, not new capability. dressing it up as profound oversells a syntactic rearrangement.
-- **currying is not the same as partial application,** though they're constantly confused. currying *always* produces a chain of strictly one-argument functions; partial application just means fixing *some* arguments of a function and leaving the rest. you can partially apply without currying, and the conflation hides what each actually does.
-- **variadic and unknown-arity functions resist it.** currying needs to know how many arguments are coming. a function that takes `*args` — any number of them — has no fixed chain length to unfold into, so it doesn't curry cleanly.
-- **it costs allocations.** a chain of nested functions builds a closure at every step. in languages not built around it, that's real overhead compared to one flat call — a price paid for the flexibility.
-- **point-free cleverness can wreck readability.** deeply curried, argument-free "point-free" style can collapse into an unreadable pipeline where no variable is ever named. the abstraction stops paying for itself when the reader can no longer see what flows where.
+- **currying adds no new capability, only shape.** curried and uncurried forms compute the same result. in most languages currying is purely ergonomic — a style choice rather than a meaningful distinction.
+- **currying and partial application are not the same thing.** currying always produces a chain of strictly one-argument functions; partial application simply means fixing some arguments of a function while leaving others open. you can partially apply without currying. the two are often conflated.
+- **functions with a variable number of arguments resist currying.** currying needs to know how many arguments are coming. a function that accepts any number of arguments has no fixed chain length to unfold.
+- **chains of functions have a performance cost.** each step creates a new function object that holds references to previously-supplied arguments. in languages not built around currying, this overhead can matter.
+- **point-free style can wreck readability.** deeply curried, argument-free programming can collapse into a pipeline where nothing is named and the flow of data is invisible. the abstraction stops paying for itself.
 
 ## related
 
-- [[lambda]] — currying is native to lambda calculus, where every function is unary and currying is the only way to take more than one argument
-- [[abstraction-layers]] — partial application as carving a specific interface out of a general one by fixing arguments
-- [[system-design]] — pre-binding configuration into a specialized component is partial application in the large
-- [[coupling]] — currying lets a caller supply arguments at different times, loosening *when* each input must be known
+- [[lambda]] — currying is native to lambda calculus, where every function is unary by definition
+- [[abstraction-layers]] — partial application as carving a specific interface out of a general one
+- [[coupling]] — currying allows arguments to be supplied at different times, loosening when each input must be known
+- [[clean-code]] — point-free style as the cautionary case of cleverness over clarity
 
 #domain/computer-science #pattern/abstraction #pattern/interface

@@ -1,59 +1,49 @@
 ---
 domain: computer-science
-patterns: [abstraction-layers, caching, coupling]
 ---
 
 # medallion architecture
 
-> **in one line:** medallion architecture is a data lakehouse design pattern that routes all data through three progressively cleaner quality tiers — bronze (raw), silver (cleaned), gold (aggregated) — so that messy source reality is contained at the edge and every downstream consumer gets exactly the level of refinement they need.
-
-![three-tier data flow: raw sources ingest as-is into bronze, bronze is validated and cleaned into silver, silver is aggregated and modeled into gold, gold serves dashboards, ML models, and analysts](assets/medallion-architecture-layers.svg)
+> **in one line:** medallion architecture routes all incoming data through three progressively cleaner tiers — raw, cleaned, and aggregated — so that the messiness of real-world sources is contained at the edge and every consumer works with data at the level of refinement they need.
 
 ## what it is
 
-when data arrives from the outside world — event streams, API feeds, database replicas, uploaded files — it is messy: missing fields, duplicate records, inconsistent types, schema drift. medallion architecture is an organizing principle for a data lakehouse that says: **don't sanitize at the edge; ingest everything raw, then refine in hops**. each hop adds quality without discarding history.
+data that arrives from the outside world is messy: missing fields, duplicate records, inconsistent formats, shifting structures. medallion architecture is an organizing principle for a data storage system that says: **don't try to clean data at the moment it arrives; ingest everything as-is, then refine in stages.** each stage adds quality without discarding history.
 
-### bronze — raw ingest, append-only
+### bronze — raw, as received
 
-bronze is the landing zone. data is written exactly as received: no type coercion, no deduplication, no schema enforcement beyond what's strictly necessary to store it. the defining rule is **append-only** — records are never updated or deleted. bronze is the source-of-truth checkpoint: if silver or gold are ever corrupted or their logic changes, you replay from bronze. it's the audit log for the entire pipeline.
+bronze is the landing zone. data is written exactly as it was received: no type enforcement, no deduplication, no transformation beyond what's needed to store it. the defining rule is **append-only** — records are added, never modified or deleted.
 
-### silver — cleaned and conformed
+this preserves the complete, original record. if later stages are corrupted or their logic changes, you can replay from bronze. bronze is the audit trail: the unaltered record of what arrived, when.
 
-silver applies the first real logic: deduplicate records, enforce types, join to reference data (dimension tables, lookup codes), validate against schemas, and standardize timestamps and keys. silver is fit for *analysis* — an engineer or data scientist can query it without first writing defensive parsing code. the silver layer is where [[coupling]] between the pipeline and source messiness is broken: upstream schema changes are absorbed here so they don't ripple into gold.
+### silver — cleaned and standardized
 
-### gold — business aggregates
+silver applies the first substantive processing: remove duplicate records, enforce consistent types, join to reference data, validate against expected schemas, and standardize dates and identifiers. silver is fit for analysis — someone working with it does not need to write defensive code to handle malformed data.
 
-gold contains domain-shaped tables: KPI rollups, ML feature stores, pre-joined reporting views, per-product metrics. each gold table is built for a specific consumer — the BI dashboard, the ranking model, the finance report. gold is [[caching|a materialized cache]]: it stores the result of expensive aggregations so consumers get sub-second queries instead of re-running heavy joins every time.
+silver is also where messiness from the source is absorbed so it doesn't propagate downstream. when an upstream system changes its format, only the bronze-to-silver logic needs to update; consumers of silver and gold are insulated.
 
-```python
-# bronze: raw event as received — messy, but complete
-{"user_id": "abc", "ts": "2024-01-03T08:12:00Z", "event": "purchase", "amt": "49.99", "amt": "49.99"}
+### gold — business-ready aggregates
 
-# silver: cleaned — deduped, typed, validated
-{"user_id": "abc", "ts": datetime(2024, 1, 3, 8, 12), "event": "purchase", "amount_usd": 49.99}
+gold contains domain-shaped tables built for specific consumers: summary dashboards, machine learning feature tables, pre-joined reporting views, monthly rollups. each gold table is designed for a particular use case. gold stores the results of expensive aggregations so consumers get fast queries instead of rerunning heavy computations every time they need an answer.
 
-# gold: aggregated for a specific consumer
-{"user_id": "abc", "month": "2024-01", "purchase_count": 3, "total_usd": 149.97}
-```
+### one-way dependency — reprocessing flows downward
 
-### reprocessing flows downward, never upward
+because bronze is immutable and silver/gold are derived from it, the system is always recoverable: fix the silver logic and replay bronze → silver → gold. the dependency is one-way — gold depends on silver depends on bronze — and that direction holds the whole structure together. upstream changes require updates only to the logic at the appropriate stage, not to the raw data.
 
-because bronze is never mutated and silver/gold are derived, you can always rebuild: fix silver logic and replay bronze → silver → gold. the dependency arrow points one way — gold depends on silver depends on bronze — and that direction is the invariant that makes the whole system trustworthy. it's the same rule as [[clean-architecture|clean architecture's dependency rule]], applied to data quality rather than code layers.
+## where this falls short
 
-## where the model breaks down
-
-- **three tiers is a simplification.** real lakehouses often have four or five hops — a "bronze-plus" quarantine for malformed records, a "silver-plus" join layer before aggregation. the names are conventions, not law; the actual graph can be a DAG with many intermediate materialization points.
-- **bronze is never truly raw.** ingestion always involves choices: file format, partitioning strategy, encoding, batching window, late-arrival handling. the "exact copy of the source" ideal collides with the reality that you're already imposing structure just by deciding *how* to store it.
-- **gold sprawl is the dominant failure mode.** because gold tables are tailored to consumers, they multiply. teams add new gold tables; old ones are never retired. over time the gold layer becomes a tangle of overlapping, inconsistently defined metrics — the same "revenue" calculated four different ways in four tables. what starts as consumer-friendly ends as the next mess to clean up.
-- **the append-only guarantee breaks at scale.** GDPR and CCPA require that personal data can be deleted ("right to erasure"). append-only bronze survives this only with specific tombstone mechanics (Delta Lake deletion vectors, Iceberg row-level deletes) — and those are non-trivial. the architectural purity of "never touch bronze" is a legal liability without deliberate design.
-- **streaming pipelines don't fit cleanly.** the model was designed for batch. a streaming bronze-to-silver-to-gold pipeline has to reason about windows, watermarks, and out-of-order events at every hop, and the clean "replay from bronze" story becomes complicated when bronze is a Kafka topic with a retention window, not an eternal file store.
+- **three tiers is a simplification.** real data pipelines often need more stages: a quarantine zone for records that fail validation, intermediate joins before aggregation. the three-tier names are conventions; the actual structure may be more complex.
+- **bronze is never truly unprocessed.** the act of ingestion involves choices: file format, storage encoding, partitioning strategy, how late-arriving data is handled. "exact copy of the source" collides with the reality that storage always imposes some structure.
+- **gold tables multiply and diverge.** because gold tables are tailored to specific consumers, they proliferate. teams add new gold tables; old ones are never retired. over time, the gold layer accumulates overlapping, inconsistently defined versions of the same metric. what started as consumer-friendly becomes the next cleanup problem.
+- **append-only conflicts with privacy law.** regulations such as GDPR require that personal data can be deleted on request. pure append-only bronze is incompatible with this unless you implement specific mechanisms for targeted deletion — which adds significant complexity.
+- **streaming is harder than batch.** the model was designed for batch pipelines. a streaming pipeline running continuously must handle out-of-order events, time windows, and partial results at every stage. the clean "replay from bronze" recovery story becomes complicated when bronze is a temporary stream rather than a permanent file store.
 
 ## related
 
-- [[abstraction-layers]] — bronze/silver/gold as quality layers that hide source messiness behind progressively cleaner interfaces
-- [[caching]] — gold as a materialized cache of expensive aggregations; bronze as the durable checkpoint
-- [[coupling]] — silver as the decoupling point that absorbs source schema changes before they reach consumers
-- [[clean-architecture]] — the dependency rule (gold → silver → bronze, never upward) mirrors the clean architecture invariant
-- [[spark]] — the typical execution engine for medallion pipelines; Delta Lake and Apache Iceberg are the storage formats that enforce bronze's append-only and ACID guarantees
+- [[abstraction-layers]] — bronze/silver/gold as quality tiers that hide source messiness behind cleaner interfaces at each level
+- [[caching]] — gold as a stored result of expensive aggregations; bronze as the durable checkpoint
+- [[coupling]] — silver as the isolation point that absorbs upstream format changes before they reach consumers
+- [[clean-architecture]] — the one-way dependency (consumers depend on more refined data, never the reverse) mirrors the architectural dependency rule
+- [[spark]] — the typical processing engine for medallion pipelines
 
 #domain/computer-science #pattern/abstraction-layers #pattern/caching #pattern/coupling

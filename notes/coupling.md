@@ -1,35 +1,34 @@
 ---
 domain: computer-science
-patterns: [coupling]
 ---
 
 # coupling
 
 > **in one line:** coupling is how much two parts of a system depend on each other — how much a change in one forces a change in, or breaks, the other.
 
-![tight coupling where A depends directly on B's internals, versus loose coupling where an interface sits between A and B's internals and absorbs change](assets/coupling-tight-vs-loose.svg)
-
 ## what it is
 
-build anything out of parts and you have to decide how those parts connect. **coupling** measures the strength of that connection: when part A is *tightly coupled* to part B, you can't touch B without understanding and probably changing A. when they're *loosely coupled*, each can change, fail, or be replaced on its own as long as the agreement between them — the **interface** — holds.
+build anything out of interacting parts and you have to decide how tightly those parts are connected. **coupling** measures the strength of that connection.
 
-the usual moves:
+when two parts are *tightly coupled*, you cannot touch one without understanding and probably changing the other. when they are *loosely coupled*, each can change, fail, or be replaced on its own, as long as the agreement between them — the **interface** — still holds.
 
-- **interfaces decouple.** if A talks to B only through a stable contract (a function signature, an API, a protocol), B's insides can change freely. the contract absorbs the change so it doesn't propagate. the interface is the seam.
-- **why loose coupling is prized.** parts can be developed, tested, deployed, and reasoned about independently. one can fail without dragging the others down with it.
-- **the failure mode of tight coupling is the cascade.** when wellbeing-of-A is wired directly to state-of-B, a change or failure in B propagates straight into A, and onward — a small local problem becomes a system-wide outage.
-- **cohesion is the complement.** the goal isn't *no* connections — it's keeping related things together (high cohesion) and unrelated things apart (low coupling).
+the usual patterns:
 
-## where the model breaks down
+- **interfaces reduce coupling.** if part A interacts with part B only through a stable, agreed-upon contract, B's internal workings can change freely. the interface absorbs the change and prevents it from propagating. the interface is the seam that keeps the two sides independent.
+- **why loose coupling matters.** loosely coupled parts can be developed, tested, deployed, and reasoned about independently. one can fail without dragging others down with it.
+- **tight coupling causes cascades.** when A's behavior depends directly on B's internal state, a change or failure in B propagates into A, and from there outward. a small local problem becomes a system-wide failure.
+- **cohesion is the complement.** the goal is not zero connections — it is keeping things that genuinely belong together close (high cohesion) and keeping things that don't need each other apart (low coupling).
 
-- **some coupling is irreducible.** parts that genuinely must cooperate have to depend on *something* shared. you can move coupling around — onto an interface, a schema, a protocol — but you can't delete it. "zero coupling" usually means the parts aren't actually working together.
-- **decoupling has a cost.** every layer of indirection added to loosen a connection is one more thing to understand and maintain. chase loose coupling too hard and you get [[premature-optimization]]: a maze of interfaces hiding what's really a simple, direct dependency.
-- **"loose" can hide real dependencies.** two components with no explicit link can still be secretly coupled through shared data, timing, or assumptions — coupling you can't see is worse than coupling you can.
+## where this falls short
+
+- **some coupling is irreducible.** parts that genuinely must cooperate have to share something. you can move coupling onto an interface or a shared protocol, but you cannot eliminate it entirely. "zero coupling" usually means the parts are not actually working together.
+- **loose coupling has costs.** every layer of indirection added to separate two parts is one more thing to understand and maintain. aggressively minimizing coupling can produce elaborate, hard-to-follow structures that hide what is actually a simple, direct relationship.
+- **hidden coupling is worse than visible coupling.** two components with no explicit connection can still be coupled through shared data, timing assumptions, or implicit expectations — dependencies you cannot see are harder to manage than the ones you can.
 
 ## related
 
 - [[buddhism]] — attachment as tightly coupling your wellbeing to states you don't control
-- [[philosophy]] — its branches coupled bidirectionally rather than cleanly stacked
+- [[philosophy]] — its branches coupled bidirectionally rather than in a clean one-way hierarchy
 - [[caching]]
 - [[abstraction-layers]]
 
