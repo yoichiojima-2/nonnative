@@ -1,48 +1,33 @@
 ---
 domain: computer-science
-patterns: [coupling, modularity, abstraction-layers]
 ---
 
 # clean code
 
-> **in one line:** clean code is [[system-design]] shrunk to its smallest scale — the same discipline of decomposition, low coupling, and clear interfaces, aimed not at servers and services but at functions, names, and modules, and optimized for the one resource that dominates software cost: the next person who has to read it.
+> **in one line:** clean code is the practice of writing software that the next person can read and understand — optimizing not for the machine's speed but for the human's comprehension, since that is the scarce resource in software development.
 
 ## what it is
 
-code is **read far more often than it's written**, and the binding constraint in software is human comprehension, not typing speed. clean code is the practice of optimizing for the reader — and once you frame it that way, its rules turn out to be [[system-design]] in miniature, the exact same vocabulary at the granularity of a single file:
+code is **read far more often than it is written.** the bottleneck in software is human comprehension, not typing speed or machine performance. clean code is the practice of writing for the reader — and when you frame it that way, its principles turn out to be the same problems of decomposition and dependency that arise in any large, complex system, just at the scale of a single file.
 
-- **meaningful names.** a name is an [[abstraction-layers|interface]]: it should tell you *what* a thing is for, not *how* it works. good naming is the cheapest documentation there is, and renaming is the cheapest refactor.
-- **small functions, one responsibility.** each function does one thing, so it fits in your head. this is decomposition and high cohesion — the single-responsibility principle — applied below the level of a service.
-- **low coupling, high cohesion.** the load-bearing one. things that change together belong together; things that don't are kept apart. minimize what each part must know about another, so a change touches few places. this is just [[coupling]], scaled down from systems to functions.
-- **DRY — don't repeat yourself.** one piece of knowledge lives in exactly one place. duplication is coupling-by-copy: a change now has to be made in *n* spots, and you will miss one.
-- **readability over cleverness.** the clever one-liner that saves the author a minute costs every future reader ten. point-free [[currying]] pushed too far is the cautionary case.
+- **meaningful names.** a name is a promise: it should tell you what something is *for*, not how it works inside. good naming is the cheapest form of documentation, and it costs nothing to change.
+- **small units, one responsibility each.** each function or module should do one thing, so it fits in your head. when something has multiple responsibilities tangled together, a change to one concern forces understanding of the other.
+- **low coupling, high cohesion.** things that change together belong together; things that don't are kept apart. minimize what each part must know about another, so a change touches as few places as possible.
+- **don't repeat yourself.** one piece of knowledge lives in exactly one place. duplication is hidden coupling: a change now has to be made in multiple spots, and you will miss one.
+- **readability over cleverness.** the compact expression that saves the author a minute costs every future reader ten. code is communication with future colleagues, including your future self.
 
-```python
-# clever: write once, read never
-r = [x for s in data for x in s if x % 2 == 0][::-1]
+## where this falls short
 
-# clean: named steps, each one obvious on its own
-evens  = [x for sub in data for x in sub if is_even(x)]
-result = list(reversed(evens))
-```
-
-### why it's the same thing as system design
-
-swap "service" for "function" and "network call" for "function call" and the rules are *identical*: minimize coupling, hide the implementation behind an interface, give each part one job. clean code is system design at the scale of a file — which is exactly why the same words (coupling, cohesion, abstraction, interface, bottleneck) carry from a cluster diagram down to a thirty-line function without translation.
-
-## where the model breaks down
-
-- **"clean" is partly taste, and taste cargo-cults.** beyond a solid core — naming, small functions, don't repeat knowledge — much of the advice is contextual or just fashionable. applied as ritual, "best practices" produce over-abstracted, indirection-heavy code that's *harder* to follow than the blunt version it replaced.
-- **premature abstraction is a real cost.** splitting into tiny functions and layers before you understand the shape of the problem is [[system-design|premature optimization]] aimed at readability — you bake the wrong seams in early, and wrong seams are expensive to move. sometimes the long, dumb, linear function genuinely *is* the clearest thing.
-- **it optimizes maintainability, which isn't always the goal.** a one-off script, a research notebook, a hot inner loop have different objectives — delete-ability, raw speed — and applying enterprise clean-code ceremony to them is just mis-optimizing for a cost that won't be paid.
-- **the rules conflict with each other.** DRY pulls against readability; "small functions" pulls against locality — chasing a single behavior through ten one-line helpers can be worse than reading one honest block. clean code is a set of **trade-offs, not commandments**, and treating any rule as absolute is itself the unclean move.
+- **"clean" is partly aesthetic and contextual.** beyond a solid core — naming, small units, no duplication — much of the advice is fashionable or situational. applied as ritual, clean code principles can produce heavily abstracted, indirection-heavy code that is *harder* to follow than the blunt version it replaced.
+- **premature abstraction is expensive.** splitting into small functions and layers before you understand the shape of the problem bakes the wrong seams in early. wrong seams are costly to move; a long, direct, linear function is sometimes genuinely clearer.
+- **it optimizes for maintainability, which isn't always the goal.** a one-off script, a prototype, a performance-critical inner loop have different objectives. applying software-craftsmanship principles to work that will be thrown away or run once is misallocating effort.
+- **the principles conflict with each other.** "don't repeat yourself" pulls against "keep things close together for readability"; "small functions" pulls against "understand what a thing does without jumping around." these are trade-offs, not commandments, and treating any one as absolute is a mistake.
 
 ## related
 
-- [[system-design]] — clean code as the same discipline at function-and-module scale
+- [[system-design]] — the same discipline at function and module scale
 - [[coupling]] — low coupling and high cohesion as the central practice
 - [[abstraction-layers]] — names and functions as interfaces that hide their implementation
-- [[currying]] — point-free style as the cautionary tale of cleverness over clarity
-- [[python]] — "readability counts" as a language built around the same value
+- [[python]] — "readability counts" as a design value built into a language
 
 #domain/computer-science #pattern/coupling #pattern/modularity #pattern/abstraction-layers

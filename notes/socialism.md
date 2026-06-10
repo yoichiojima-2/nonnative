@@ -1,70 +1,64 @@
 ---
 domain: economics
-patterns: [decentralization, shared-infrastructure, feedback-loop, coupling]
 ---
 
 # socialism
 
-> **in one line:** socialism is an architecture where the means of production are owned collectively and run as shared infrastructure — it breaks [[capitalism]]'s private accumulation loop by routing surplus back to the collective rather than compounding it in private hands.
+> **in one line:** socialism changes who owns the means of production — from private owners who pocket the surplus to some form of collective that routes it back to shared benefit — and that single change in ownership has consequences throughout the rest of how an economy works.
 
-![ownership topology: capitalism routes surplus to the private owner; socialism routes it back to the collective](assets/socialism-ownership-topology.svg)
+## the ownership claim
 
-## the mapping
+the core of socialism is an ownership claim, not primarily a coordination claim. where [[capitalism]] makes factories, land, infrastructure, and productive equipment the private property of individuals who extract surplus from them, socialism makes them **collectively owned** — by workers, the state, or some other body, operated for collective benefit. the question of *how to coordinate* production (via markets or planning) is secondary to this foundational ownership question.
 
-the core of socialism is an ownership claim, not a coordination claim. where [[capitalism]] makes the means of production (factories, land, infrastructure, capital equipment) private assets that generate surplus for their owners, socialism makes them **collective** — owned by workers, the state, or some other body, and operated for collective benefit. that single change in the ownership layer has architectural consequences throughout the rest of the system.
+### forms of collective ownership
 
-### the ownership layer — who holds root permission
+the collective can take different forms:
 
-in capitalism, the capital-owner holds root permission: they decide what to produce, how, and where surplus goes. workers are bought as inputs; their wages are a cost, and the surplus accrues to ownership.
+- **state ownership**: the government holds and deploys productive assets on behalf of citizens. the state becomes the capital allocator.
+- **worker cooperatives**: the workers in a firm collectively own it and share decisions and surplus among themselves.
+- **democratic socialism**: key industries are publicly owned within a democratic political framework, rather than under wholesale state control.
 
-in socialism, that root permission belongs to the collective. the form varies:
+the unifying move in all of these: **surplus goes to the collective, not to a private owner.** the self-compounding loop of capitalism — where surplus reinvests as private capital, concentrating ownership over time — is structurally interrupted.
 
-- **state ownership**: the government holds and deploys productive assets on behalf of citizens. the state becomes the single capital-allocator.
-- **worker cooperatives**: the workers in a firm own it collectively and distribute decisions and surplus among themselves.
-- **democratic socialism**: key industries are publicly owned within democratic governance, rather than wholesale state control.
+### coordination without private profit
 
-the unifying move: **surplus goes to the collective, not to a private owner.** the M-C-M' compounding loop — where surplus reinvests as private capital, concentrating ownership — is structurally broken.
-
-### coordination mechanisms — how allocation happens without a profit signal
-
-breaking private ownership raises the immediate question: *how do you decide what to produce and in what quantities?* [[capitalism]] solves this with prices and profit (see [[neoliberalism]]). socialism has no single answer:
+breaking private ownership raises the immediate question: how do you decide what to produce, and in what quantities, if not through profit and loss?
 
 | variant | ownership | coordination |
 |---|---|---|
 | central planning | state | directives from a planning authority |
-| market socialism | collective / cooperative | prices, but surplus goes to workers |
-| democratic socialism | mixed public/private | market + democratic regulation |
+| market socialism | collective / cooperative | prices, but surplus stays collective |
+| democratic socialism | mixed public/private | markets plus democratic regulation |
 
-**central planning** replaces price signals with directives. a planning authority aggregates demand and allocates resources from the top. coherent, eliminates duplicated investment, can prioritize social goals explicitly. but it hits hayek's **knowledge bottleneck** (see [[neoliberalism]]): the dispersed local information that prices compress — every preference shift, every local inefficiency, every supplier problem — can't be centralized in time. the planner is a [[spof|single point of failure]] and a throughput ceiling for information.
+**central planning** replaces price signals with directives. a planning authority aggregates demand and allocates resources from the center. it can prioritize social goals explicitly and eliminate duplicated investment. but it runs into hayek's **knowledge problem** (see [[neoliberalism]]): the dispersed local information that prices compress — every preference shift, every local inefficiency, every supplier problem — cannot be centralized in time. the planner becomes a bottleneck.
 
-**market socialism** tries to have both: collective ownership so surplus doesn't accumulate privately, plus price signals so local information still propagates. it keeps the mesh while changing who owns the nodes.
+**market socialism** tries to preserve both: collective ownership so surplus doesn't accumulate privately, plus price signals so local information still propagates. it changes who owns the nodes while keeping the distributed coordination.
 
-### the social objective function — welfare over roi
+### different objectives
 
-the fundamental difference is what the system optimizes for. capitalism's error signal is return on investment — if a deployment isn't generating surplus, capital exits. socialism's error signal can be explicitly set to **welfare, need, or equality** — things that are real objectives but don't show up in a price.
+the fundamental difference from capitalism is what the system is trying to maximize. capitalism's signal is return on investment — if a deployment isn't generating surplus, capital exits. socialism can explicitly set the objective to **welfare, need, or equality** — things that are real goals but don't show up in prices.
 
-this makes externalities **internalizable by design**. a publicly-owned firm doesn't have to externalize pollution costs to remain competitive; the planning authority can write them directly into the objective. capitalism optimizes a proxy metric; socialism can set the objective function closer to the actual target, but doing so requires that someone can *specify and measure* the target — which turns out to be hard.
+this makes externalities easier to address in principle: a publicly-owned firm doesn't face the same pressure to externalize pollution costs to remain competitive. the planning authority can write social costs directly into the objective function. the catch is that doing so requires someone to *specify and measure* that objective — which turns out to be harder than it sounds.
 
 ### the accumulation dynamic — broken, but replaced with what?
 
-the private M-C-M' loop amplifies initial inequality: whoever starts with more capital ends with more. socialism breaks this loop. but breaking a positive-feedback concentration dynamic doesn't automatically create a stable, desirable equilibrium — it removes one driver of concentration and raises the design question: who then makes investment decisions, and by what criterion?
+private ownership compounds initial inequality: whoever starts with more capital ends with more. socialism breaks this dynamic. but interrupting a self-reinforcing loop doesn't automatically produce a better equilibrium — it removes one driver of concentration and raises a new question: who makes investment decisions, and by what criterion?
 
-without profit as the selection signal, investment choices are made through **political and bureaucratic processes**, which have their own distortions: rent-seeking, capture by special interests, short electoral cycles, ideological rigidity. trading a biased profit signal for a biased political signal isn't obviously an improvement — it's a different error distribution.
+without profit as the selection signal, investment choices fall to **political and bureaucratic processes**, which have their own distortions: rent-seeking, capture by special interests, short electoral cycles, ideological rigidity. a biased profit signal replaced by a biased political signal is not obviously an improvement — it is a different error distribution.
 
-## where the analogy breaks down
+## where this goes wrong
 
-- **"collective ownership" is politically ambiguous.** worker cooperative, democratic municipality, central state bureaucracy, and party dictatorship are all "collective ownership" in formal terms but differ enormously in who actually makes decisions and who bears costs. the ownership form matters less than the decision-making process inside it.
-- **the knowledge problem is real and not fully solved.** hayek's critique — that dispersed local information can't be centralized in time — was borne out in practice. soviet central planning produced chronic misallocation and shortages where market signals were suppressed. market socialism partially addresses this; pure command economies don't.
-- **incentive structures shift, they don't disappear.** without profit driving individual investment decisions, other incentives fill the vacuum: political patronage, ideological conformity, bureaucratic self-preservation. collective ownership doesn't make people altruistic; it changes what behavior is rewarded, with different but real distortions.
+- **"collective ownership" is politically ambiguous.** worker cooperative, democratic municipality, central state bureaucracy, and party dictatorship are all "collective ownership" in formal terms. they differ enormously in who actually makes decisions and who bears costs. the ownership form matters less than the decision-making process inside it.
+- **the knowledge problem is real and not fully solved.** hayek's critique — that dispersed local information cannot be centralized in time — was borne out in the failures of soviet central planning: chronic misallocation, shortages, and distorted incentives where market signals were suppressed. market socialism partially addresses this; command economies generally do not.
+- **incentives shift, not disappear.** without profit driving individual investment decisions, other incentives fill the space: political patronage, ideological conformity, bureaucratic self-preservation. collective ownership doesn't make people altruistic; it changes what behavior is rewarded, with different but real distortions.
 - **"collective" doesn't mean "equal."** state-owned industries have managers and workers with very different power. who controls the collective is often more important than who formally owns it — the asymmetry relocates rather than dissolves.
-- **the analogy makes it sound like a binary topology choice.** in practice, capitalism and socialism are poles on a spectrum, and most real economies are mixed. the question is less "which architecture?" and more "which sectors should be public infrastructure and which should be market-coordinated?" — a pragmatic engineering tradeoff rather than an ideological verdict.
+- **most real economies are mixed.** capitalism and socialism are poles on a spectrum. the practical question is less "which system?" and more "which sectors should be managed as public goods and which should be market-coordinated?" — a pragmatic judgment about where different mechanisms work better.
 
 ## related
 
-- [[capitalism]] — the ownership architecture socialism is designed to replace or constrain
-- [[neoliberalism]] — the strongest case for market coordination; the knowledge problem is its best argument against central planning
-- [[feedback-loop]] — the accumulation loop collective ownership is designed to break; and what fills its place
-- [[coupling]] — central planning tightly couples every allocation decision to one node; market socialism loosens it
+- [[capitalism]] — the ownership structure socialism is designed to replace or constrain
+- [[neoliberalism]] — the strongest case for market coordination and the knowledge problem argument against central planning
+- [[feedback-loop]] — the private accumulation loop collective ownership interrupts; and what replaces it
 - [[philosophy]]
 - [[science]]
 

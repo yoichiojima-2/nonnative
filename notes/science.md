@@ -1,62 +1,50 @@
 ---
 domain: science
-patterns: [feedback-loop, abstraction, consensus, versioning]
 ---
 
 # science
 
-> **in one line:** science is test-driven development against reality — you can't read reality's source code, so you write models, run experiments to find where they fail, and keep only what hasn't broken yet.
+> **in one line:** science is a self-correcting process for finding out where your picture of the world is wrong — not a body of final truths, but a method of locating and fixing errors in models that have not yet been falsified.
 
-![the scientific method as a loop: observe, hypothesize, predict, experiment; a passing prediction loops back to observe, a failing one back to hypothesize](assets/science-method-loop.svg)
+## the method as a loop
 
-<sub>green just means "no failing test yet" — the loop never terminates.</sub>
+science is not a body of facts; it's a **process for finding where your model of the world fails.** the facts are accumulated results; the method is what keeps those results honest. its structure is a continuous loop: observe → hypothesize → predict → test → revise.
 
-## the mapping
+a hypothesis is a proposed model. its prediction is what should follow if the model is right. the experiment is the test. a failed prediction means the model needs revision. the crucial point is that you never *pass* permanently — confirming a prediction doesn't prove the model is correct, only that it hasn't failed yet. a theory is a model that has survived every test run so far, nothing more.
 
-science isn't a body of facts; it's a **process for locating where your model of the world is wrong.** the facts are a cache of results; the method is the loop that keeps that cache honest. its structure is the loop, the contract that makes the loop meaningful, the way results get trusted, and the way the whole framework occasionally gets replaced.
+### falsifiability — the contract that makes the loop meaningful
 
-### the loop — the scientific method
+a hypothesis only belongs in the scientific inquiry if it *can* fail. a claim compatible with every possible observation carries no information — it doesn't tell you anything about what the world is actually like, because it rules nothing out.
 
-observe → hypothesize → predict → experiment → revise. this is a **red-green test cycle** — a [[feedback-loop]] correcting the model against reality. a hypothesis is a model; its prediction is the expected output; the experiment is the test; a failed prediction is a failing test that forces a rewrite. the crucial part is that you never *pass* permanently — green only ever means "no failing test yet." a theory is code that has survived every test run so far, nothing more.
+falsifiability is the demarcation line: a claim that forbids no possible observation tells you nothing. "every event has a prior cause" is falsifiable in principle — a genuinely uncaused event would refute it. "the soul persists after death" as ordinarily stated is not, because no possible observation would count as decisive evidence against it. this doesn't mean unfalsifiable claims are meaningless — only that they are not scientific ones.
 
-### the contract — falsifiability
+### theories as the current best approximation
 
-a hypothesis only counts if it *can* fail. a claim that's compatible with every possible observation is **a function that returns `true` for all inputs, or code with no assertions** — it can't break, so it carries zero information. this is the demarcation line: a claim that forbids nothing tells you nothing. "it might rain tomorrow" is unfalsifiable and useless; "it will rain tomorrow" can fail, and that's exactly what makes it worth testing.
-
-```python
-def is_scientific(claim):
-    # earns the label only if some observation could prove it false
-    return exists_observation_that_would_refute(claim)
-
-is_scientific("it will rain here tomorrow")    # True  — a dry sky refutes it
-is_scientific("it may or may not rain")        # False — nothing could refute it
-```
-
-### theories as models, not truth
-
-a theory is the **current best abstraction** — a compression of past observations that predicts new ones. it's never "true," only not-yet-falsified, like a [[caching|cached approximation]] continuously revalidated against a source of truth you can't directly read. and superseded theories usually aren't deleted, they're **scoped:** newton's mechanics wasn't deleted by einstein, it was given an operating range — still correct at low speeds, wrong outside it. good theories are abstractions with documented limits, not absolutes.
+a theory is the **current best model** — a compression of past observations that generates predictions about new ones. it is never "true" in a final sense, only not-yet-falsified. and superseded theories usually don't get deleted — they get **scoped**: newton's mechanics wasn't wrong, it was shown to have an operating range. it remains correct at low speeds and ordinary scales, and wrong outside those boundaries. mature theories are models with documented limits, not refuted errors.
 
 ### distributed validation — peer review and reproducibility
 
-no single node is trusted. a result isn't accepted because one lab produced it; it's accepted when **independent machines reproduce it** — consensus in a system that assumes any individual node may be faulty through error, bias, or fraud. reproducibility is the integration test on someone else's hardware. the replication crisis is the discovery that a lot of "merged" results never actually passed CI anywhere but the original machine.
+no single researcher or lab is trusted alone. a result is accepted when independent researchers, working separately, reproduce it. this is how the community guards against error, bias, equipment failure, and fraud — not by trusting individual judgment, but by requiring that findings survive independent attempts to replicate them. the replication crisis has revealed that a significant fraction of published findings fail this test when others try to repeat them.
 
-### version migrations — paradigm shifts
+### paradigm shifts — when the whole framework changes
 
-most science is *normal science:* incremental work inside a **paradigm**, the framework everyone currently builds on. anomalies that don't fit accumulate like tech debt, patched with ad hoc fixes. when the debt becomes unbearable, a paradigm shift is a **major-version rewrite** — not a patch but a migration to an incompatible new framework (geocentric → heliocentric, classical → quantum). like all big migrations, it's expensive, disruptive, and resisted until the old platform is plainly unmaintainable.
+most science is **normal science**: incremental work within an accepted framework, building on shared methods and assumptions. anomalies accumulate over time — findings that don't fit the existing framework, patched with increasingly complicated ad hoc explanations.
 
-## where the analogy breaks down
+when the accumulated anomalies become overwhelming, a **paradigm shift** replaces the framework itself: geocentric → heliocentric, classical mechanics → quantum mechanics. these are not ordinary corrections. they change the basic vocabulary, the acceptable methods, and what counts as a good explanation. they are expensive, disruptive, and typically resisted until the old framework is clearly inadequate.
 
-- **TDD has a spec; science doesn't.** in software you know the intended behavior and write tests to match it. reality ships no spec sheet — you're reverse-engineering a system whose requirements you can only guess, and the "tests" are themselves hypotheses about what *should* happen.
-- **you can't read the source — ever.** all you get is black-box behavior, and every observation is mediated by instruments and prior theory. there's no ground-truth repository to diff against, which is exactly why "not-yet-falsified" is the best status available.
-- **falsifiability is cleaner in theory than in practice.** real theories come bundled with auxiliary assumptions, so a failed prediction rarely says *which* part broke (the duhem–quine problem). you can almost always rescue a core theory by blaming a supporting assumption — the scientific equivalent of blaming a failing test on a flaky environment.
-- **paradigm shifts aren't purely rational migrations.** kuhn's harder point is that they're partly social — funding, careers, generational turnover ("science advances one funeral at a time"). not a clean cost-benefit decision to upgrade.
-- **the method isn't the whole of science.** framing it as a pure validation loop hides the creative, intuitive step: where good hypotheses come from in the first place isn't algorithmic.
+## where this account falls short
+
+- **science has no external specification.** in testing software, you know the intended behavior and write tests against it. in science, there is no specification sheet for how the world should work — you are reverse-engineering a system whose "requirements" you can only guess. you can't check your model against ground truth, only against its own predictions.
+- **you never reach reality directly.** every observation is mediated by instruments, theory, and prior assumptions. there is no raw, uninterpreted access to the world. the "tests" are themselves hypothesis-laden.
+- **falsifiability is cleaner in theory than in practice.** real theories come bundled with auxiliary assumptions. when a prediction fails, it rarely tells you which part of the bundle broke. you can almost always preserve the core theory by blaming a supporting assumption — which means the demarcation between scientific and non-scientific is messier in practice than in principle.
+- **paradigm shifts are not purely rational events.** thomas kuhn's deeper point is that they are partly social: funding, careers, generational change, and community inertia all shape when and how paradigm shifts happen. "science advances one funeral at a time" is not just a quip.
+- **the method doesn't explain where good hypotheses come from.** describing science as a validation loop leaves out the creative and intuitive work of generating hypotheses worth testing. that step is not algorithmic.
 
 ## related
 
-- [[caching]] — a theory as a revalidated cache of reality
 - [[feedback-loop]] — the method as a self-correcting loop
-- [[philosophy]]
+- [[caching]] — a theory as a provisional model continuously checked against observation
+- [[philosophy]] — the foundational assumptions science inherits without examining
 - [[liberal-arts]]
 - [[evolution]]
 

@@ -1,51 +1,35 @@
 ---
 domain: computer-science
-patterns: [feedback-loop, interface]
 ---
 
 # test-driven development
 
-> **in one line:** TDD inverts the usual order — you write the test *before* the code, so the test is a precise executable spec you build up to, and a tight red-green-refactor [[feedback-loop]] keeps you from ever drifting far from working software.
-
-![the red-green-refactor cycle: write a failing test (red), write the minimum code to pass (green), clean up while tests stay green (refactor), then loop back for the next behavior](assets/tdd-red-green-refactor.svg)
+> **in one line:** TDD inverts the usual order — you write the test before the code, so you define precisely what you want before building it, and a tight feedback loop keeps working behavior locked in as the code evolves.
 
 ## what it is
 
-normally you write code and then, maybe, test it. TDD flips that: the **failing test comes first**, and you only ever write production code to make a failing test pass. the discipline is a three-beat loop you repeat for every small piece of behavior.
+the ordinary approach: write code, then (maybe) test it. TDD flips this. the **test comes first**, and you only ever write code to satisfy a failing test. the discipline runs as a three-beat loop, repeated for every small piece of behavior.
 
-- **red — write a failing test.** describe the behavior you want as a test for code that doesn't exist yet, run it, and watch it fail. the failure is the point: a test you've *seen* fail is a test you know actually checks something. a test that can't fail carries no information — the same emptiness as an [[science|unfalsifiable]] claim.
-- **green — make it pass, minimally.** write the dumbest thing that turns the bar green. not elegant, not general, just passing. resist building for imagined futures; the only job is to satisfy the test in front of you.
-- **refactor — clean up under green.** now that a passing test pins the behavior in place, improve the code — rename, dedup, restructure — and rerun. because the test stays green, you refactor *without fear*. the test is a ratchet: it locks in working behavior so each cleanup can only move forward.
+- **red — write a failing test.** describe the behavior you want as a test for code that doesn't yet exist, run it, and watch it fail. the failure is the point: a test you've *seen* fail is a test you know is actually checking something. a test that was never observed to fail could be checking nothing at all.
+- **green — make it pass, minimally.** write the simplest thing that makes the test pass. not elegant, not general — just passing. the only job at this step is to satisfy the test in front of you.
+- **refactor — improve under green.** now that a passing test pins the behavior in place, clean up the code — rename, reorganize, remove duplication — and rerun the tests. because the test holds the behavior steady, you can improve the code without fear of breaking it.
 
-```python
-# RED — slugify doesn't exist yet; this fails, and that failure proves the test bites
-def test_slugify():
-    assert slugify("Hello World") == "hello-world"
+writing the test first forces you to define the interface before implementing it — you have to decide what something should do before you decide how it works. the accumulating test suite is also a living description of the system's behavior: unlike documentation, it cannot describe something wrong without showing up as a failure.
 
-# GREEN — the simplest thing that passes, nothing more
-def slugify(s): return s.lower().replace(" ", "-")
+## where this falls short
 
-# REFACTOR — improve the internals later; the test guards the behavior while you do
-```
-
-writing the test first forces you to use the thing before you build it — you design the [[abstraction-layers|interface]] from the *caller's* side, deciding what you want to call before how it works. and the suite you accumulate is a double asset: a regression net that screams the moment a change breaks old behavior, and living documentation that can't rot, because stale docs that lie would show up as a failing test.
-
-this is the literal original that [[science]] is the metaphor *for*: this vault frames science as "TDD against reality." the difference science.md flags is the whole gap — in TDD a real spec exists and you know the intended behavior, so the loop actually converges; reality ships no spec sheet.
-
-## where the model breaks down
-
-- **green means "matches the spec you wrote," not "correct."** you can faithfully TDD your way to the wrong behavior — every test passes and the feature is still wrong. it's the same gap a type checker or [[kant|kant's universalizability test]] has: the moves are *well-formed*, which is not the same as *right*.
-- **it biases toward what's easy to test.** pure, unit-testable functions get thorough coverage; the side-effecting, integration-heavy, concurrency-tangled parts — usually the *riskiest* ones — resist test-first and quietly get undertested. you optimize the measurable and neglect the dangerous.
-- **coverage is a proxy, and proxies get gamed.** "100% coverage" measures lines *executed*, not behaviors *verified* — you can run every line while asserting almost nothing. chase the number (goodhart's law) and you get a green suite that guarantees little.
-- **tests can over-couple to the implementation.** rigid test-first often breeds a thicket of tiny seams and mocks introduced *only* to make code testable — [[clean-code|premature abstraction]] driven by the tool. tests welded to internals then break on every refactor, defeating the fearless-refactoring the loop was supposed to grant.
-- **it doesn't fit exploratory work.** when you don't yet *know* the spec — research, prototyping, tuning how a UI feels — writing tests first is writing specifications for behavior you're still discovering. test-first assumes you already know the target.
+- **passing means "matches the spec you wrote," not "correct."** you can faithfully follow TDD and still build the wrong thing, if the tests describe the wrong behavior. the loop converges on what you specified, not necessarily on what you needed.
+- **it biases toward what's easy to test.** pure, self-contained functions are easy to test and tend to get thorough coverage. the parts that involve real-world side effects, timing, and external dependencies — often the riskiest parts — resist test-first and quietly receive less attention.
+- **test coverage is a proxy metric.** "every line ran during tests" is not the same as "every important behavior is verified." optimizing coverage as a number can produce suites that run everywhere and assert almost nothing.
+- **tests can couple too tightly to the implementation.** writing tests before the code sometimes pushes toward artificially decomposed designs that are testable but unnecessarily complex. tests that depend on internal details break on every refactor, defeating the stability the loop was supposed to provide.
+- **it doesn't fit exploratory work.** when you don't yet know what you're building — research, prototyping, feeling out how a UI should work — writing tests first is writing specifications for behavior you haven't discovered yet. test-first assumes you already know the target.
 
 ## related
 
-- [[science]] — the metaphor's source: science is "TDD against reality," minus a real spec to test against
-- [[feedback-loop]] — red-green-refactor as a self-correcting loop with the failing test as the error signal
-- [[clean-code]] — refactoring under green as the safe path to clean code; over-mocking as the failure mode
-- [[clean-architecture]] — testability in isolation is one of its central payoffs
-- [[abstraction-layers]] — test-first as designing the interface from the caller's side
+- [[science]] — a parallel structure: both involve defining what would count as failure before running the experiment
+- [[feedback-loop]] — the red-green-refactor cycle as a self-correcting loop
+- [[clean-code]] — refactoring under green as the safe path to cleaner code
+- [[clean-architecture]] — designing the interface from the caller's side before implementing it
+- [[abstraction-layers]] — test-first as a way to define what a layer promises before building what's underneath
 
 #domain/computer-science #pattern/feedback-loop #pattern/interface

@@ -1,79 +1,57 @@
 ---
 domain: philosophy
-patterns: [consensus, coupling, feedback-loop, abstraction]
 ---
 
 # rousseau
 
-> **in one line:** rousseau treats legitimate political authority as a consensus protocol — the general will is not the sum of individual preferences but the emergent collective interest, and legitimate law is only what that protocol produces, not what any private party or ruler decides.
+> **in one line:** rousseau asks not how individuals hand power to a state, but how a community can govern itself so that obeying the law is the same as obeying yourself — and his answer is the general will, a concept as powerful as it is difficult to pin down.
 
-## the mapping
+## the problem rousseau is solving
 
-rousseau's political philosophy, primarily in *the social contract* (1762), is centrally about **legitimacy**: under what conditions does a law or a government actually have authority over you? his answer is that authority is legitimate only when it expresses the **general will** — the collective interest of the body politic as a whole, not just the preferences of whoever holds power. that concept is his most distinctive contribution, and the hardest to map cleanly.
+rousseau's political philosophy, primarily in *The Social Contract* (1762), centers on a single question: under what conditions does a law or government actually have authority over you, rather than merely the power to compel you?
 
-### the problem — authority without consent is just force
+he opens with the famous line: *"man is born free, and everywhere he is in chains."* his target is the same as [[john-locke|locke]]'s — illegitimate authority — but his diagnosis is different. locke says authority is illegitimate when it violates pre-existing natural rights. rousseau challenges the whole framing of a pre-social individual with pre-given rights. humans are social animals; we become who we are through our communities. the question is not "how do individuals grant some of their independence to a state" but "how can a community govern itself such that the law expresses the community's own genuine will?"
 
-rousseau opens *the social contract* with the famous line: "man is born free, and everywhere he is in chains." his target is the same as [[john-locke|locke]]'s — illegitimate authority — but his diagnosis is different. locke says authority is illegitimate when it violates pre-existing natural rights. rousseau says the framing of "natural rights in a pre-social state" is itself misleading. humans are *social* animals; we become who we are through society. the question is not "how do individuals give up some freedom to the state" but "how can a collective govern itself such that obeying the law is the same as obeying yourself."
+### the social contract — not delegation but merger
 
-### the social contract — merging individual wills into a collective
+in locke's account, individuals hire a state to protect their rights, retaining those rights and the ability to fire the state. in rousseau's account, something more radical happens: individuals **merge into a new collective entity** — the body politic. each person gives themselves fully to the whole, but because everyone does so equally, no one is subordinated to anyone else. you remain free because you are part of the sovereign that makes the laws you obey.
 
-in rousseau's contract, individuals don't just hire a service (as in locke). they **merge into a new collective entity** — the body politic, or sovereign. each person gives themselves fully to the collective, but because everyone does so equally, no one is subordinated to anyone else. you are still free because you are part of the sovereign that makes the laws you must obey.
+the citizens don't authorize the state — they *are* the state. the sovereign is the community acting as a collective, not a separate institution the community delegates to.
 
-```
-# lockean contract: individuals delegate enforcement to a service
-sovereign = Service(authorized_by=[citizen_1, citizen_2, ...])
+### the general will — the key concept
 
-# rousseau's contract: individuals merge into a new collective subject
-sovereign = merge(citizen_1, citizen_2, ...)  # the sovereign IS the citizens
-# obeying the law = obeying the collective self you're part of
-```
+the central and most contested idea is the **general will** (*volonté générale*). rousseau distinguishes it sharply from the **will of all** (*volonté de tous*):
 
-this is a fundamentally different topology from locke. locke's state is a contracted service the citizens can fire. rousseau's sovereign is the citizens themselves acting as a collective. the citizens don't authorize the state — they *are* the state.
+- **will of all**: the sum of individual preferences. what you get when everyone votes their private interest. it can be captured by factions and produces outcomes that serve particular groups rather than the community as a whole.
+- **general will**: the collective interest — what the community genuinely needs to flourish, stripped of individual bias and factional influence. it is what each citizen would will if they were thinking as a citizen, about the common good, rather than as a private individual pursuing personal advantage.
 
-### the general will — consensus vs aggregation
+the general will is not arrived at by simply counting votes. rousseau is explicit that the will of all and the general will can diverge. voting is an imperfect probe of the collective interest, not a definition of it. deliberation, civic education, and institutions that orient people toward the common good are needed to bring the two into alignment.
 
-the central and most contested concept is the **general will** (*volonté générale*). rousseau distinguishes it sharply from the "will of all" (*volonté de tous*):
+### inequality as corruption of the political process
 
-- **will of all**: the arithmetic sum of individual preferences. this is what you get from a vote if everyone votes their private interest. it can be gamed, captured, and produces outcomes that serve factions rather than the common good.
-- **general will**: the collective interest — what the community needs to flourish, stripped of private bias. it is what each citizen *would* will if they were thinking about the common good rather than personal advantage.
+rousseau is famous for his critique of property and civil society in the *Discourse on Inequality* (1755). his argument is that the accumulation of property introduces a self-reinforcing cycle: the wealthy use their surplus to influence institutions in their favor, which generates more wealth, which buys more influence. the political process that was supposed to express the general will becomes captured by private economic power.
 
-the general will is more like a **consensus protocol** than a majority vote. it is trying to reach the collectively correct answer, not just aggregate preferences. the problem is that no simple voting procedure is guaranteed to produce it — rousseau is clear that the general will can be suppressed, distorted, or mistaken for the will of all.
+this makes rousseau a deep critic of [[capitalism]] in a way [[john-locke|locke]] is not. locke builds property rights in at the foundation; rousseau treats concentrated property as the mechanism that makes genuine political equality impossible.
 
-```
-# will of all: aggregate preferences (can diverge from collective good)
-will_of_all = sum(citizen.private_preference for citizen in citizens)
+### civic virtue — what the general will requires
 
-# general will: the collective interest — harder to compute, more meaningful
-general_will = collective_interest(citizens)  # the target; voting is an imperfect probe
-# these coincide only when citizens deliberate as citizens, not as factions
-```
+rousseau recognized that the general will needs citizens who are capable of thinking as citizens — not just as private individuals maximizing their own interests. this requires cultivation: education, civic institutions, shared commitments. he called this *civil religion* — not a sectarian creed, but a set of civic values that orient people toward the common good. without it, political deliberation degenerates into factional bargaining and the general will cannot emerge.
 
-### inequality and its corruption of the signal
+## where this falls short
 
-rousseau is famous for his critique of property and civil society in the *discourse on inequality*. his argument there is that the accumulation of property introduces a **feedback loop that corrupts the general will**: the wealthy use their surplus to influence institutions in their favor, which generates more surplus, which buys more influence. the signal that was supposed to express collective interest becomes [[coupling|tightly coupled]] to private economic power.
-
-this makes rousseau a radical critic of [[capitalism]] in a way [[john-locke|locke]] is not. locke builds property rights in at the foundation; rousseau treats concentrated property as the mechanism that makes real political equality impossible.
-
-### civil religion and civic virtue — keeping the protocol honest
-
-rousseau saw that the general will needs citizens who are willing to think as citizens, not just as private individuals maximizing their interest. this requires cultivation — education, civic institutions, and what he called civil religion: shared values and commitments that orient people toward the common good. this is **the protocol's precondition**, not an optional module. without it, deliberation degenerates into factional bargaining and the general will can't emerge.
-
-## where the analogy breaks down
-
-- **the general will is not fully computable.** rousseau says you can be "forced to be free" — compelled to obey a law because it expresses the general will even if you voted against it. this is a coherent philosophical claim (you might be wrong about the collective interest) that becomes alarming as a political practice. it has been used to justify suppression of dissent in the name of the "true" collective interest.
-- **the merger is not reversible in his system.** unlike locke's terminable service contract, rousseau's body politic has no clean exit mechanism for individuals. "giving yourself fully to the collective" slides toward a collectivism that can erase individual rights.
-- **the general will needs an oracle.** distinguishing the general will from the will of all requires knowing what the collective interest actually is. rousseau doesn't give a reliable procedure for this. in practice, whoever claims to speak for the general will can claim authority for almost anything.
-- **the "natural" baseline is idealized.** rousseau's picture of pre-social humans as free and self-sufficient is historically contested. anthropology suggests human sociality is older and more constitutive than the state-of-nature framing allows.
-- **the consensus protocol scales poorly.** rousseau explicitly thought direct democracy required a small city-state. for large, diverse societies, the conditions for genuine deliberation toward a general will are hard to maintain. representative institutions re-introduce the intermediaries he was trying to eliminate.
+- **the general will is not fully computable.** rousseau famously says you can be "forced to be free" — compelled to obey a law that expresses the general will even if you voted against it, because you may be wrong about the collective interest. this is a coherent philosophical claim that becomes alarming as a political practice. it has historically been used to justify suppressing dissent in the name of the "true" collective interest.
+- **there is no clean exit.** unlike locke's terminable service contract, rousseau's merged body politic has no mechanism for individuals to withdraw. "giving yourself fully to the collective" can slide toward collectivism that overrides individual rights.
+- **the general will needs an oracle.** distinguishing the general will from the will of all requires knowing what the genuine collective interest is. rousseau doesn't provide a reliable procedure for this. whoever claims to speak for the general will can claim authority for almost anything.
+- **the "natural" baseline is idealized.** rousseau's picture of pre-social humans as free and self-sufficient is historically questionable. anthropology suggests human sociality is older and more fundamental than the state-of-nature framing assumes.
+- **direct democracy doesn't scale.** rousseau explicitly believed his model required a small city-state where citizens could deliberate directly. in large, diverse societies, the conditions for genuine deliberation toward a general will are hard to maintain. representative institutions reintroduce the intermediaries he was trying to eliminate.
 
 ## related
 
-- [[john-locke]] — a different social contract: individual rights first, state as contracted service
+- [[john-locke]] — a different social contract: individual rights first, state as revocable authority
 - [[kant]] — grounds moral authority in universal reason rather than collective will
-- [[feedback-loop]] — property accumulation as a feedback loop that corrupts political equality
-- [[coupling]] — concentrated wealth tightly coupling political outcomes to private economic power
+- [[feedback-loop]] — property accumulation as a cycle that corrupts political equality
 - [[socialism]] — rousseau's critique of property inequality is an early strand of the socialist tradition
-- [[neoliberalism]] — the opposite pole: individual property rights and limited state as foundations
+- [[neoliberalism]] — the opposite pole: individual property rights and limited state as the foundation
 - [[philosophy]]
 
 #domain/philosophy #pattern/consensus #pattern/feedback-loop #pattern/coupling

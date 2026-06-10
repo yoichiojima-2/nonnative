@@ -1,68 +1,49 @@
 ---
 domain: computer-science
-patterns: [abstraction, interpreter, hard-limits]
 ---
 
 # turing machine
 
-> **in one line:** the turing machine is the reference implementation of "computation itself" — the minimal spec that defines the ceiling every real computer is an optimization *beneath*, never above.
+> **in one line:** the turing machine is a stripped-down formal model of computation — the minimal definition of what "computing" means, and the ceiling that every real computer operates beneath, never above.
 
-## the mapping
+## what it is
 
-most entries here map an outside concept onto system design. this one runs the other way: the turing machine is the bedrock system design stands on — the formal definition of what a computer can do at all. it's worth reading as a system precisely because it's the most stripped-down system possible. take a computer and delete everything inessential; what remains is this.
+alan turing proposed the turing machine in 1936 not as a device to be built, but as a conceptual tool: a precise mathematical definition of what it means to compute something. by reducing computation to its absolute minimum, the model made it possible to reason formally about what computers can and cannot do.
 
-### the parts — a computer with everything removed
+### the parts — computation with everything removed
 
-- **the infinite tape → memory:** an unbounded strip of cells you can read and write. the one frank idealization — perfectly reliable, never full.
-- **the head → the cursor / bus:** reads and writes a single cell and moves one step left or right. random access is *gone*; all you have is sequential stepping.
-- **the state register → the program counter:** which of finitely many internal states the machine is currently in.
-- **the transition table → the program:** "given the current state and the symbol under the head, write this symbol, move this direction, switch to this state." a pure lookup table. that is the entire instruction set.
+the turing machine has three elements:
 
-the whole machine, drawn, is just a tape and a head sitting in some state:
+- **an infinite tape** — an unbounded strip of cells, each holding a symbol. this is the machine's memory: perfectly reliable, never full (the one idealization).
+- **a head** — a cursor that reads and writes one cell at a time and moves one step left or right. no random access; only sequential stepping.
+- **a state register and transition table** — the machine is always in one of a finite set of states. the transition table is the program: given the current state and the symbol under the head, it specifies what symbol to write, which direction to move, and what state to enter next.
 
-```
-                head  (state = A)
-                  v
-  ... ┆ 1 ┆ 0 ┆ 1 ┆ 1 ┆ _ ┆ _ ┆ ...
-            infinite tape, both directions
-```
+that is all. no display, no network, no operating system. a program is a table of rules; computation is the head stepping through the tape, following those rules, until it halts.
 
-and a "program" is nothing but a transition table — here, a three-line one that flips every bit until it hits a blank, then stops:
+### universality — the key insight
 
-```
-  state  read │ write  move  next
-  ────────────┼─────────────────────
-    A      0   │   1     R     A
-    A      1   │   0     R     A
-    A      _   │   _     –    HALT
-```
+the result that changed everything: there exists a **universal turing machine** that can simulate *any* turing machine, given a description of it written on the tape. this is the discovery that a program is just data — something that can be read, manipulated, and executed by another program. it is the conceptual foundation for the modern computer: one general machine that runs any software, rather than separate devices for separate tasks.
 
-no clock speed, no screen, no RAM-versus-disk. those are all performance optimizations bolted onto a model that already fixes the full space of what's computable.
+### the church–turing thesis — what computers can do
 
-### universality — the interpreter
+the claim: anything that can be computed by any systematic mechanical procedure can be computed by a turing machine. in practice, this means that all programming languages capable of simulating a turing machine are equivalent in power — they can compute exactly the same set of functions, only at different speeds and with different ergonomics. adding more memory, more processors, or different hardware architectures doesn't expand the set of computable problems; it only affects how quickly or how practically they can be solved.
 
-the result that changed everything: a **universal** turing machine can simulate *any* turing machine, given that machine's description written on its tape. this is the discovery of **code-as-data** — a program is just another input. the universal machine is the first virtual machine: one fixed device that runs arbitrary software. every interpreter, VM, emulator, and CPU-executing-a-program descends from it. it is the reason hardware and software can be separate things at all.
+### the halting problem — a proven impossibility
 
-### the church–turing thesis — the platform's capability ceiling
+it is impossible to write a program that, given any other program and input, correctly determines whether that program will ever finish. this is not a gap in current knowledge or a technical limitation — it is a proven mathematical impossibility. turing's proof established that there are well-defined questions a computer cannot answer, in principle, no matter how fast or how large. this was the first of many results showing that computability has hard limits independent of any engineering constraint.
 
-the claim that anything "effectively computable" can be computed by a turing machine. in engineering terms it pins down the **capability ceiling of the platform.** more tape, faster heads, parallelism, quantum tricks — none of it can compute a function a turing machine can't; it can only get there faster. any language that can simulate a turing machine is "turing-complete," which means they are all the *same machine* in different syntax. it's the ultimate API-compatibility statement: one computable-function interface, endlessly different implementations behind it.
+## where this falls short
 
-### the halting problem — the unfixable bug
-
-you cannot write a program that decides, for every program-and-input, whether it eventually halts. this isn't a missing feature awaiting a patch — it's a **proven impossibility**, computing's first "this cannot be built." the original spec, in effect, says *this endpoint will never exist.* every undecidable problem and every "why can't the compiler just detect X" wish traces back to this limit.
-
-## where the analogy breaks down
-
-- **the infinite tape is a resource you can never provision.** real machines have finite memory, so strictly *every physical computer is a finite-state machine*, not a true turing machine. the model's power rests on an idealization that can't be deployed.
-- **"same capability" hides everything that matters in practice.** turing-completeness says nothing about time or space cost. your laptop and a turing machine compute the same set of functions, but complexity — P vs NP, exponential blowups — is where all real engineering happens. equal in capability is not equal in feasibility.
-- **it's a model of computation, not a blueprint for one.** nobody builds turing machines; real CPUs are random-access register machines. the tape-and-head picture is pedagogical, not architectural.
-- **the church–turing thesis is a thesis, not a theorem.** it's a conceptual claim about what "computable" means, not something proven; hypercomputation models are still argued over. the ceiling is a remarkably well-supported conjecture, not a closed proof.
+- **the infinite tape cannot exist.** real machines have finite memory. strictly, every physical computer is a finite-state machine, not a turing machine. the model's power rests on an idealization that cannot be realized.
+- **equal capability hides all the interesting differences.** turing-completeness says nothing about time or space requirements. whether a problem can be solved in seconds or trillions of years is where all real engineering happens — and that question is entirely outside the turing machine's scope.
+- **it is a model of computation, not a blueprint for one.** nobody builds turing machines; real processors work differently. the tape-and-head picture is for reasoning about what is computable, not for designing hardware.
+- **the church–turing thesis is a thesis, not a proof.** it is a conceptual claim about the limits of mechanical computation, not a proven theorem. the claim is widely accepted and remarkably well-supported, but it is not formally established in the way mathematical theorems are.
 
 ## related
 
-- [[abstraction-layers]] — universality as the layer that divides software from hardware
+- [[abstraction-layers]] — the universal turing machine as the layer that separates software from hardware
+- [[lambda]] — an equivalent model of computation from an entirely different starting point
 - [[philosophy]]
 - [[science]]
-- [[evolution]]
 
 #domain/computer-science #pattern/abstraction #pattern/interpreter #pattern/hard-limits

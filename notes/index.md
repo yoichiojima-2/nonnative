@@ -1,58 +1,58 @@
 # index
 
-> **a map of content for this vault.** every note explains something through the lens of system design. the **engineering primitives** are the shared vocabulary; the **domain concepts** borrow them as lenses and link back — hubs and spokes.
+> **a map of content for this vault.** each note explains a concept — from philosophy, economics, literature, science, and computer science — on its own terms and in relation to the others.
 
-## the vocabulary — engineering primitives
-
-explained concept-first; these are the building blocks everything else reuses.
-
-- [[system-design]] — the lens itself: parts, interfaces, bottlenecks, and trade-offs
-- [[abstraction-layers]] — hiding the messy details behind a simple interface
-- [[caching]] — a small fast copy kept close to where it's needed
-- [[coupling]] — how much a change in one part forces a change in another
-- [[feedback-loop]] — a system feeding its own output back into its input
-- [[turing-machine]] — the bare-metal definition of what counts as computation
-- [[lambda]] — computation built out of nothing but functions
-- [[currying]] — turning a many-argument function into a chain of one-argument ones
-- [[python]] — a language that optimizes human time over machine time
-- [[spark]] — a distributed computation disguised as a single list
-- [[medallion-architecture]] — raw → cleaned → aggregated: three quality tiers that contain source messiness at the edge
-- [[clean-code]] — system design shrunk to the scale of a single file
-- [[clean-architecture]] — one rule about which way the dependency arrows point
-- [[tdd]] — write the failing test first; a red-green-refactor loop
-
-## the concepts — by domain
+## concepts — by domain
 
 ### philosophy
 
-- [[philosophy]] — the base layer of the knowledge stack
-- [[buddhism]] — an incident postmortem for the mind, scaled out to emptiness and compassion
-- [[descartes]] — a secure boot for knowledge
-- [[kant]] — the mind as a rendering pipeline
-- [[wittgenstein]] — two major versions of meaning
-- [[john-locke]] — legitimate government as a terminable service contract
-- [[rousseau]] — political authority as a consensus protocol producing the general will
+- [[philosophy]] — the discipline that examines what every other field takes for granted
+- [[buddhism]] — a diagnosis of suffering and a path toward liberation
+- [[descartes]] — rebuilding knowledge from a single verified foundation
+- [[kant]] — the mind as the source of structure in experience
+- [[wittgenstein]] — two incompatible theories of how language means
+- [[john-locke]] — legitimate government as authority grounded in consent
+- [[rousseau]] — political authority as the expression of a genuine collective will
 
 ### science
 
-- [[science]] — test-driven development against reality
+- [[science]] — a self-correcting process for finding where your picture of the world is wrong
 
 ### economics
 
-- [[neoliberalism]] — coordination as a decentralized protocol
+- [[neoliberalism]] — the argument that market coordination outperforms central planning
 - [[capitalism]] — private ownership and a self-compounding surplus loop
-- [[socialism]] — collective ownership and shared infrastructure instead of private accumulation
+- [[socialism]] — collective ownership and shared benefit instead of private accumulation
 
 ### religion
 
-- [[christianity]] — a salvation protocol with a root-level mediating proxy
+- [[christianity]] — a diagnosis of human separation from God and a remedy through mediated grace
 
 ### literature
 
-- [[1984]] — a totalitarian state as a distributed surveillance system with a SPOF by design
+- [[1984]] — a portrait of power taken to its logical extreme
+
+## computer science — core concepts
+
+these are foundational ideas in computing, explained for a general reader:
+
+- [[system-design]] — deciding how to divide a complex system into parts and what trade-offs to accept
+- [[abstraction-layers]] — hiding complexity behind a simple interface
+- [[caching]] — keeping a copy close to where it's needed to avoid recomputing it
+- [[coupling]] — how much a change in one part forces a change in another
+- [[feedback-loop]] — a system that watches its own output and corrects itself
+- [[turing-machine]] — the minimal formal definition of what computation is
+- [[lambda]] — computation built entirely from functions
+- [[currying]] — turning a many-argument function into a chain of one-argument functions
+- [[python]] — a language that optimizes human readability over machine speed
+- [[spark]] — distributed data processing presented as a single collection
+- [[medallion-architecture]] — raw → cleaned → aggregated: three quality tiers for data
+- [[clean-code]] — writing software that the next person can read and understand
+- [[clean-architecture]] — a single rule about which direction dependencies should point
+- [[tdd]] — writing the test before the code
 
 ## by pattern
 
-the same engineering idea recurs across domains; follow a tag to see everywhere it shows up:
+the same structural idea recurs across domains; follow a tag to see everywhere it appears:
 
 `#pattern/abstraction` · `#pattern/abstraction-layers` · `#pattern/caching` · `#pattern/consensus` · `#pattern/control` · `#pattern/coupling` · `#pattern/decentralization` · `#pattern/feedback-loop` · `#pattern/hard-limits` · `#pattern/horizontal-scaling` · `#pattern/interface` · `#pattern/interpreter` · `#pattern/modularity` · `#pattern/mutable-state` · `#pattern/observability` · `#pattern/spof` · `#pattern/versioning`
