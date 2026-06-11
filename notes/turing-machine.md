@@ -43,6 +43,7 @@ it is impossible to write a program that, given any other program and input, cor
 
 - [[abstraction-layers]] — the universal turing machine as the layer that separates software from hardware
 - [[lambda]] — an equivalent model of computation from an entirely different starting point
+- [[large-language-model]] — a statistical inhabitant of the computable space, bounded by a finite context where the turing machine assumed an infinite tape
 - [[philosophy]]
 - [[science]]
 

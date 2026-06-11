@@ -46,5 +46,6 @@ cutting across all of this is a distinction between two modes. one is **fast, au
 - [[feedback-loop]] — executive function as the monitor-and-correct loop steering action toward intention
 - [[buddhism]] — attention training and the observation that the "self" dissolves into a flux of momentary mental events
 - [[science]] — perception as theory-laden: there is no raw, uninterpreted access to the world, only the brain's best model of it
+- [[large-language-model]] — next-token prediction as the same guess-from-priors move perception makes, hallucination as its confident false memory
 
 #domain/psychology #pattern/abstraction-layers #pattern/caching #pattern/feedback-loop #pattern/hard-limits #pattern/coupling

@@ -60,6 +60,7 @@ these are foundational ideas in computing, explained for a general reader:
 - [[clean-code]] — writing software that the next person can read and understand
 - [[clean-architecture]] — a single rule about which direction dependencies should point
 - [[tdd]] — writing the test before the code
+- [[large-language-model]] — next-token prediction at scale, and the capability that falls out of it
 
 ## by pattern
 
