@@ -44,7 +44,7 @@ jobs:
   publish:
     uses: yoichiojima-2/nonnative/.github/workflows/publish.yml@main
     with:
-      vault-dir: notes          # subfolder in your repo containing .md files
+      vault-dir: vault          # subfolder in your repo containing .md files
       title: "My Notes"         # optional; defaults to site.config.ts value
       tagline: "my thoughts"    # optional
       base-path: /my-repo       # set to /repo-name for project Pages; omit for user Pages
@@ -60,7 +60,7 @@ Then enable **Settings → Pages → Source: GitHub Actions** in your vault repo
 
 | input | required | default | description |
 |---|---|---|---|
-| `vault-dir` | no | `notes` | subfolder inside your repo containing the markdown vault |
+| `vault-dir` | no | `vault` | subfolder inside your repo containing the markdown vault |
 | `title` | no | `nonnative` | site title shown in the header |
 | `tagline` | no | `an obsidian vault, published` | meta description + footer |
 | `base-path` | no | `` | URL subpath for project Pages (e.g. `/my-repo`) |
@@ -84,7 +84,7 @@ The vault stays fully openable in Obsidian on desktop.
 app/           routes: home, /notes/[id], /graph, /tags, /tags/[tag]
 components/    Markdown, Graph (canvas), Sidebar, SiteChrome (nav + search)
 lib/           notes.ts (vault → data), markdown.ts (wikilink/tag transform)
-notes/         demo vault (a few notes exercising all features)
+vault/         demo vault (a few notes exercising all features)
 site.config.ts the only file to touch when running the engine standalone
 ```
 
@@ -113,5 +113,5 @@ pnpm build      # static export → ./out
 ## deploy this repo's demo site
 
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml) calls the local
-reusable workflow and deploys the demo vault (`notes/`) to
+reusable workflow and deploys the demo vault (`vault/`) to
 https://yoichiojima-2.github.io/nonnative on every push to `main`.

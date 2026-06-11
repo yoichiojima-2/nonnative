@@ -6,7 +6,7 @@ name: Build and deploy vault to GitHub Pages
 #     publish:
 #       uses: yoichiojima-2/nonnative/.github/workflows/publish.yml@main
 #       with:
-#         vault-dir: notes           # subfolder inside your repo that holds .md files
+#         vault-dir: vault           # subfolder inside your repo that holds .md files
 #         title: "My Notes"
 #         base-path: ""              # leave empty for user/org Pages (no subpath)
 #       secrets: inherit             # or pass secrets: {} if no secrets needed
@@ -29,7 +29,7 @@ on:
       vault-dir:
         description: "Subfolder inside the caller repo that holds the markdown vault"
         type: string
-        default: "notes"
+        default: "vault"
       title:
         description: "Site title (overrides site.config.ts default)"
         type: string
