@@ -49,6 +49,7 @@ when the accumulated anomalies become overwhelming, a **paradigm shift** replace
 - [[kuhn]] — the source of paradigm shifts: how the whole framework changes, not just the results
 - [[hume]] — the problem of induction at the root of the method: why past success can't guarantee future results
 - [[philosophy]] — the foundational assumptions science inherits without examining
+- [[greece]] — the origin of logos: explaining nature by impersonal principles open to challenge
 - [[liberal-arts]]
 - [[evolution]]
 

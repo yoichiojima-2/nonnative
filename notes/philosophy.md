@@ -47,6 +47,7 @@ what stays inside "philosophy" is, by this pattern, the set of questions that *d
 - [[coupling]] — why those layers are not cleanly separated
 - [[buddhism]]
 - [[science]]
+- [[greece]] — where the discipline began, with the move from mythos to logos
 - [[liberal-arts]]
 
 #domain/philosophy #pattern/abstraction-layers #pattern/modularity #pattern/coupling

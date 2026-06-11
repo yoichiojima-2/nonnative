@@ -7,6 +7,7 @@
 ### philosophy
 
 - [[philosophy]] — the discipline that examines what every other field takes for granted
+- [[greece]] — where explaining the world by reasons rather than stories became a habit
 - [[buddhism]] — a diagnosis of suffering and a path toward liberation
 - [[descartes]] — rebuilding knowledge from a single verified foundation
 - [[hobbes]] — absolute authority as the only escape from a war of all against all
