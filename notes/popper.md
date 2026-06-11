@@ -39,6 +39,7 @@ popper extended the idea to politics in *The Open Society and Its Enemies* (1945
 - [[kuhn]] — the great rival account: popper says science *should* try to refute theories; kuhn describes how it actually clings to paradigms until they break
 - [[hume]] — popper accepts hume's problem of induction and builds a philosophy of science that needs no induction at all
 - [[tdd]] — the same instinct in software: you don't trust code by confirming it works, you write tests that try to make it fail
+- [[statistics]] — the hypothesis test is falsification made quantitative: reject the null, never prove your claim true
 - [[feedback-loop]] — conjecture → test → refutation → revision, and the open society as politics that can correct its own errors
 - [[philosophy]]
 

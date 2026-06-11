@@ -44,6 +44,7 @@ when the accumulated anomalies become overwhelming, a **paradigm shift** replace
 
 - [[feedback-loop]] — the method as a self-correcting loop
 - [[caching]] — a theory as a provisional model continuously checked against observation
+- [[statistics]] — the machinery for deciding whether an experimental result is signal or noise
 - [[popper]] — the source of the falsifiability criterion: a theory is scientific only if it could be refuted
 - [[kuhn]] — the source of paradigm shifts: how the whole framework changes, not just the results
 - [[hume]] — the problem of induction at the root of the method: why past success can't guarantee future results
