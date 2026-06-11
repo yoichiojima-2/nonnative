@@ -62,10 +62,13 @@ export default function Graph({
 
     const W = () => canvas.clientWidth;
     const H = () => canvas.clientHeight;
+    // spread the starting ring so nodes don't begin on top of each other —
+    // tightly packed nodes generate enormous repulsion on the first frames.
+    const spread = Math.max(130, nodes.length * 9);
     nodes.forEach((n, i) => {
       const a = (i / Math.max(nodes.length, 1)) * Math.PI * 2;
-      n.x = W() / 2 + Math.cos(a) * 130 + (Math.random() - 0.5) * 30;
-      n.y = H() / 2 + Math.sin(a) * 130 + (Math.random() - 0.5) * 30;
+      n.x = W() / 2 + Math.cos(a) * spread + (Math.random() - 0.5) * 30;
+      n.y = H() / 2 + Math.sin(a) * spread + (Math.random() - 0.5) * 30;
     });
 
     const view = { x: 0, y: 0, k: focus ? 1 : 0.85 };
@@ -74,7 +77,9 @@ export default function Graph({
     let panning = false;
     let last: { x: number; y: number } | null = null;
     let moved = false;
-    let alpha = 1;
+    let alpha = 0.35; // current simulation energy; eased up to `alphaCap`
+    let warmup = 0; // frames elapsed, used to ramp energy in gently
+    const alphaCap = 1;
     let raf = 0;
 
     const radius = (n: SimNode) => 4 + Math.sqrt(n.degree || 1) * 2.1;
@@ -105,6 +110,12 @@ export default function Graph({
 
     function step() {
       if (alpha < 0.02) return;
+      // ramp energy up over the first ~60 frames so the layout settles into
+      // motion instead of exploding outward the instant it appears.
+      if (warmup < 60) {
+        warmup++;
+        alpha = Math.min(alphaCap, alpha + (alphaCap - 0.35) / 60);
+      }
       const cx = W() / 2;
       const cy = H() / 2;
       for (let i = 0; i < nodes.length; i++) {
@@ -138,11 +149,19 @@ export default function Graph({
         b.vx -= dx * f;
         b.vy -= dy * f;
       });
+      // cap speed so a momentary force spike can't fling a node across the
+      // canvas — this is what keeps the opening frames calm.
+      const maxV = 14;
       nodes.forEach((n) => {
         n.vx += (cx - n.x) * 0.004 * alpha;
         n.vy += (cy - n.y) * 0.004 * alpha;
         n.vx *= 0.86;
         n.vy *= 0.86;
+        const speed = Math.hypot(n.vx, n.vy);
+        if (speed > maxV) {
+          n.vx = (n.vx / speed) * maxV;
+          n.vy = (n.vy / speed) * maxV;
+        }
         if (n !== drag) {
           n.x += n.vx;
           n.y += n.vy;
