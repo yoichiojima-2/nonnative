@@ -23,6 +23,7 @@
 ### science
 
 - [[science]] — a self-correcting process for finding where your picture of the world is wrong
+- [[statistics]] — reasoning under uncertainty: what a sample can and can't tell you about the whole
 
 ### psychology
 
