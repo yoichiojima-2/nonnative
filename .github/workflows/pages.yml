@@ -20,7 +20,7 @@ jobs:
   publish:
     uses: ./.github/workflows/publish.yml
     with:
-      vault-dir: notes
+      vault-dir: vault
       base-path: /nonnative
     permissions:
       contents: read

@@ -12,7 +12,7 @@ const siteConfig = {
   // folder of markdown notes; relative to the repo root, or an absolute path
   // when the vault lives outside this repo. `index.md` inside it becomes the
   // home page.
-  vaultDir: process.env.VAULT_DIR || "notes",
+  vaultDir: process.env.VAULT_DIR || "vault",
 };
 
 export default siteConfig;
