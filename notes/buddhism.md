@@ -86,6 +86,7 @@ but compassion needs wisdom to sustain itself. compassion without the insight of
 - [[caching]] — craving as a fixed expectation the mind refuses to update
 - [[coupling]] — attachment as binding one's wellbeing to states outside one's control
 - [[feedback-loop]] — craving as a self-reinforcing cycle with no natural stopping point
+- [[hume]] — a western thinker who independently reached the no-self view: the self as a bundle of fleeting perceptions
 - [[stoicism]]
 - [[entropy]]
 - [[ego]]

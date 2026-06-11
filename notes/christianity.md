@@ -56,6 +56,7 @@ christian theology insists that history is not an open-ended process. the world 
 - [[abstraction-layers]] — mediation as making accessible what neither side could reach directly
 - [[coupling]] — the incarnation as a deliberate union of the divine and the human
 - [[neoliberalism]] — a contrasting framework where the state provides the platform and individuals operate within it
+- [[nietzsche]] — its sharpest modern critic: he reads christian morality as the triumph of "slave morality"
 - [[judaism]]
 - [[islam]]
 - [[philosophy]]

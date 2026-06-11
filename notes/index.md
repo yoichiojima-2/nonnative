@@ -9,10 +9,16 @@
 - [[philosophy]] — the discipline that examines what every other field takes for granted
 - [[buddhism]] — a diagnosis of suffering and a path toward liberation
 - [[descartes]] — rebuilding knowledge from a single verified foundation
-- [[kant]] — the mind as the source of structure in experience
-- [[wittgenstein]] — two incompatible theories of how language means
+- [[hobbes]] — absolute authority as the only escape from a war of all against all
 - [[john-locke]] — legitimate government as authority grounded in consent
+- [[hume]] — empiricism pushed until causation, the self, and induction dissolve
 - [[rousseau]] — political authority as the expression of a genuine collective will
+- [[kant]] — the mind as the source of structure in experience
+- [[nietzsche]] — creating values after the collapse of their religious foundation
+- [[wittgenstein]] — two incompatible theories of how language means
+- [[sartre]] — existence before essence, and the burden of radical freedom
+- [[popper]] — science as bold conjecture and ruthless attempts at refutation
+- [[kuhn]] — science as long calm punctuated by paradigm revolutions
 
 ### science
 

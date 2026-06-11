@@ -50,6 +50,7 @@ locke himself thought money — an agreed store of value that doesn't spoil — 
 
 ## related
 
+- [[hobbes]] — the contract theorist locke writes against: an absolute sovereign and no right of revolution
 - [[rousseau]] — a different social contract: more collectivist, less property-centric, more skeptical of inequality
 - [[kant]] — grounds rights in reason rather than in labor and natural law
 - [[neoliberalism]] — property rights and limited government as foundations; locke is an intellectual root
