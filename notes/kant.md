@@ -53,5 +53,6 @@ in both ethics and epistemology, kant's move is the same: the law is found in th
 - [[science]] — kant's synthetic a priori provided the philosophical grounding for newtonian physics, later revised by relativity
 - [[philosophy]] — epistemology reframed around what the knowing subject contributes
 - [[wittgenstein]] — another thinker who located structure in the subject rather than the world
+- [[cognitive-function]] — the empirical study of the mental faculties kant argued for a priori
 
 #domain/philosophy #pattern/abstraction-layers #pattern/interface

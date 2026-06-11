@@ -48,6 +48,7 @@ a final move with long consequences for ethics. hume notices that writers slide,
 - [[science]] — induction and causation, which science runs on, are exactly what hume shows cannot be rationally grounded
 - [[john-locke]] — the shared empiricist starting point, followed by locke cautiously and by hume to its radical end
 - [[buddhism]] — the bundle theory of self closely parallels the buddhist denial of a permanent self
+- [[cognitive-function]] — the bundle of perceptions is the raw stream the cognitive faculties impose order on
 - [[philosophy]]
 
 #domain/philosophy #pattern/caching #pattern/feedback-loop #pattern/abstraction

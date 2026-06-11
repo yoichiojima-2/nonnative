@@ -30,6 +30,7 @@ the whole thing is a single trade: **speed bought with the risk of being out of 
 
 - [[buddhism]] — craving as a fixed expectation the mind refuses to update, even as reality moves on
 - [[science]] — a theory as a provisional model continuously checked against new observations
+- [[cognitive-function]] — working vs. long-term memory as a fast-tier / slow-tier hierarchy in the mind
 - [[coupling]]
 - [[abstraction-layers]]
 
