@@ -1,0 +1,100 @@
+name: Build and deploy vault to GitHub Pages
+
+# Reusable workflow. Call it from a vault repo like this:
+#
+#   jobs:
+#     publish:
+#       uses: yoichiojima-2/nonnative/.github/workflows/publish.yml@main
+#       with:
+#         vault-dir: notes           # subfolder inside your repo that holds .md files
+#         title: "My Notes"
+#         base-path: ""              # leave empty for user/org Pages (no subpath)
+#       secrets: inherit             # or pass secrets: {} if no secrets needed
+#       permissions:
+#         contents: read
+#         pages: write
+#         id-token: write
+#
+# Put concurrency on the caller job, not here — workflow-level concurrency
+# inside a reusable workflow is applied to the workflow definition repo, not
+# the caller. Example:
+#
+#   concurrency:
+#     group: pages
+#     cancel-in-progress: false
+
+on:
+  workflow_call:
+    inputs:
+      vault-dir:
+        description: "Subfolder inside the caller repo that holds the markdown vault"
+        type: string
+        default: "notes"
+      title:
+        description: "Site title (overrides site.config.ts default)"
+        type: string
+        default: ""
+      tagline:
+        description: "Site tagline / meta description (overrides site.config.ts default)"
+        type: string
+        default: ""
+      base-path:
+        description: "URL subpath, e.g. /my-repo for project Pages (empty = root)"
+        type: string
+        default: ""
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout vault (caller repo)
+        uses: actions/checkout@v4
+        with:
+          path: vault
+
+      - name: Checkout engine (nonnative)
+        uses: actions/checkout@v4
+        with:
+          repository: yoichiojima-2/nonnative
+          # Pin to the exact engine ref the caller selected so the build is
+          # reproducible. github.job_workflow_sha is the SHA of the reusable
+          # workflow file being executed — correct inside a reusable workflow
+          # (github.workflow_sha / github.workflow_ref refers to the caller).
+          ref: ${{ github.job_workflow_sha }}
+          path: engine
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: engine/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: engine
+
+      - name: Build static site
+        run: pnpm build
+        working-directory: engine
+        env:
+          VAULT_DIR: ${{ github.workspace }}/vault/${{ inputs.vault-dir }}
+          NEXT_PUBLIC_SITE_TITLE: ${{ inputs.title }}
+          NEXT_PUBLIC_SITE_TAGLINE: ${{ inputs.tagline }}
+          NEXT_PUBLIC_BASE_PATH: ${{ inputs.base-path }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: engine/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

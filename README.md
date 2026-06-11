@@ -1,71 +1,117 @@
 # nonnative
 
-an [Obsidian](https://obsidian.md) vault published as a static site on GitHub
-Pages — markdown in, an Obsidian-style reading experience out.
+A static-site engine for [Obsidian](https://obsidian.md) vaults — point it at
+any flat folder of markdown and it publishes an Obsidian-style reading
+experience on GitHub Pages.
 
-**live site:** https://yoichiojima-2.github.io/nonnative
+**demo site:** https://yoichiojima-2.github.io/nonnative
 
-## how it works
+## features
 
-the vault in [`notes/`](notes) is the single source of truth: a flat folder of
-markdown files connected with `[[wikilinks]]` and grouped with `#tags`
-(`#domain/*`, `#pattern/*`). open it in Obsidian to write; push to `main` to
-publish.
+- markdown with `[[wikilinks]]` and aliased `[[target|label]]`
+- links to non-existent notes shown as **unresolved** (as Obsidian does)
+- **tag** pages for every `#namespace/tag`
+- **backlinks** on every note
+- an interactive **graph view** (global + per-note local)
+- an Obsidian-style **quick-switcher search** (fuzzy, keyboard-driven)
+- mobile bottom-nav layout; light/dark theme follows the system
 
-at build time the Next.js app reads the vault and renders it with the features
-that matter for reading:
+## using this engine for your own vault
 
-- markdown with `[[wikilinks]]` and aliased `[[target|label]]`,
-- links to non-existent notes shown as **unresolved** (as Obsidian does),
-- **tag** pages for every `#namespace/tag`,
-- **backlinks** on every note,
-- an interactive **graph view** (global + per-note local),
-- an Obsidian-style **quick-switcher search** (fuzzy, keyboard-driven),
-- a mobile bottom-nav layout and light/dark theme that follows the system.
+Create a GitHub Actions workflow in your vault repo that calls the reusable
+workflow here. Your vault and this engine are checked out side-by-side at
+build time — your repo never needs to fork or copy this code.
 
-the engine is generic — it isn't tied to this vault. point it at any flat
-folder of Obsidian markdown by editing [`site.config.ts`](site.config.ts):
+```yaml
+# .github/workflows/pages.yml  (in your vault repo)
+name: Publish to GitHub Pages
 
-```ts
-const siteConfig = {
-  title: "nonnative",            // site name shown in the header
-  tagline: "…",                  // meta description + footer
-  vaultDir: "notes",             // folder of markdown, index.md = home page
-};
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    uses: yoichiojima-2/nonnative/.github/workflows/publish.yml@main
+    with:
+      vault-dir: notes          # subfolder in your repo containing .md files
+      title: "My Notes"         # optional; defaults to site.config.ts value
+      tagline: "my thoughts"    # optional
+      base-path: /my-repo       # set to /repo-name for project Pages; omit for user Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 ```
 
-images referenced by notes live in `<vaultDir>/assets/` and are mirrored into
-`public/assets/` when a build or the dev server starts.
+Then enable **Settings → Pages → Source: GitHub Actions** in your vault repo.
+
+### inputs
+
+| input | required | default | description |
+|---|---|---|---|
+| `vault-dir` | no | `notes` | subfolder inside your repo containing the markdown vault |
+| `title` | no | `nonnative` | site title shown in the header |
+| `tagline` | no | `an obsidian vault, published` | meta description + footer |
+| `base-path` | no | `` | URL subpath for project Pages (e.g. `/my-repo`) |
+
+## vault format
+
+The vault is a flat folder of markdown files:
+
+- one note per file, kebab-case names (`my-note.md`)
+- `index.md` becomes the home page
+- `[[wikilinks]]` and `[[target|label]]` aliases work out of the box
+- `#namespace/tag` tags — a tag page is generated for each
+- optional YAML frontmatter: `domain: mycolor` colors the node in the graph
+- images live in `<vault-dir>/assets/` and are referenced as `![alt](assets/name.png)`
+
+The vault stays fully openable in Obsidian on desktop.
+
+## engine layout
 
 ```
-app/          routes: home, /notes/[id], /graph, /tags, /tags/[tag]
-components/   Markdown, Graph (canvas), Sidebar, SiteChrome (nav + search)
-lib/          notes.ts (vault -> data), markdown.ts (wikilink/tag transform)
-notes/        the vault (content)
-site.config.ts  the only file to touch to reuse this for another vault
+app/           routes: home, /notes/[id], /graph, /tags, /tags/[tag]
+components/    Markdown, Graph (canvas), Sidebar, SiteChrome (nav + search)
+lib/           notes.ts (vault → data), markdown.ts (wikilink/tag transform)
+notes/         demo vault (a few notes exercising all features)
+site.config.ts the only file to touch when running the engine standalone
 ```
 
-## develop
+The engine is vault-agnostic. Everything site-specific is in `site.config.ts`
+and overridable via env vars — the reusable workflow sets them for you.
+
+## develop locally
 
 ```bash
 pnpm install
 pnpm dev        # http://localhost:3000
 ```
 
+To develop against an external vault:
+
+```bash
+VAULT_DIR=/path/to/your/vault NEXT_PUBLIC_SITE_TITLE="My Notes" pnpm dev
+```
+
 ## build
 
 ```bash
-pnpm build      # static export -> ./out
+pnpm build      # static export → ./out
 ```
 
-when hosting under a subpath (e.g. GitHub Pages project sites), set the prefix:
+## deploy this repo's demo site
 
-```bash
-NEXT_PUBLIC_BASE_PATH=/nonnative pnpm build
-```
-
-## deploy
-
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) builds and deploys
-to GitHub Pages on every push to `main`. enable it once under
-**Settings → Pages → Build and deployment → Source: GitHub Actions**.
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) calls the local
+reusable workflow and deploys the demo vault (`notes/`) to
+https://yoichiojima-2.github.io/nonnative on every push to `main`.
