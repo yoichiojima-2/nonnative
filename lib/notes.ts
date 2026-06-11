@@ -52,7 +52,7 @@ export interface TagEntry {
   notes: Note[];
 }
 
-const VAULT = path.join(process.cwd(), siteConfig.vaultDir);
+const VAULT = path.resolve(process.cwd(), siteConfig.vaultDir);
 
 // ── small helpers ────────────────────────────────────────────────────────
 const noteId = (target: string) => target.trim().toLowerCase().replace(/\s+/g, "-");
