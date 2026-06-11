@@ -61,6 +61,7 @@ these are foundational ideas in computing, explained for a general reader:
 - [[clean-architecture]] — a single rule about which direction dependencies should point
 - [[tdd]] — writing the test before the code
 - [[large-language-model]] — next-token prediction at scale, and the capability that falls out of it
+- [[react]] — describe what the screen should look like for a given state, and let the library make it so
 
 ## by pattern
 
