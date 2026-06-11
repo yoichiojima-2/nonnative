@@ -48,6 +48,7 @@ rousseau recognized that the general will needs citizens who are capable of thin
 ## related
 
 - [[john-locke]] — a different social contract: individual rights first, state as revocable authority
+- [[hobbes]] — the contract he rejects at the root: rousseau denies the state of nature is a war and reframes the contract as merger, not submission
 - [[kant]] — grounds moral authority in universal reason rather than collective will
 - [[feedback-loop]] — property accumulation as a cycle that corrupts political equality
 - [[socialism]] — rousseau's critique of property inequality is an early strand of the socialist tradition

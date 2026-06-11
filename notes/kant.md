@@ -49,6 +49,7 @@ in both ethics and epistemology, kant's move is the same: the law is found in th
 
 - [[abstraction-layers]] — the mind as the only layer accessible to us; reality-in-itself is unreachable below it
 - [[descartes]] — kant's response to him: stop trying to verify the external world, and ask what the mind must contribute for experience to be possible
+- [[hume]] — the philosopher who "woke kant from his dogmatic slumber"; the synthetic a priori is kant's answer to hume's problem of induction
 - [[science]] — kant's synthetic a priori provided the philosophical grounding for newtonian physics, later revised by relativity
 - [[philosophy]] — epistemology reframed around what the knowing subject contributes
 - [[wittgenstein]] — another thinker who located structure in the subject rather than the world

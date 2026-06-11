@@ -53,6 +53,7 @@ descartes made a parallel contribution in mathematics: the coordinate system tha
 - [[coupling]] — mind and body as two separate substances and the problem of how they interact
 - [[philosophy]] — the epistemological project he tried to place on certain ground
 - [[science]] — doubt as a test every belief must survive, anchored in reason rather than experiment
+- [[hume]] — the empiricist reply: introspection finds no solid "I", only a bundle of fleeting perceptions
 - [[buddhism]] — a contrasting view: descartes anchors on a solid self, buddhism denies one
 
 #domain/philosophy #pattern/abstraction-layers #pattern/spof #pattern/coupling
