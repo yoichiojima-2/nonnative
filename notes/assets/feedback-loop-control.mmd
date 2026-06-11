@@ -1,6 +1,0 @@
-flowchart LR
-    SP("setpoint") --> CMP{compare}
-    CMP -->|error| CTRL("correction")
-    CTRL --> SYS("system")
-    SYS --> MEAS("measure output")
-    MEAS -->|feedback| CMP
