@@ -24,6 +24,10 @@
 
 - [[science]] — a self-correcting process for finding where your picture of the world is wrong
 
+### psychology
+
+- [[cognitive-function]] — the mind's information-processing faculties, from perception to executive control
+
 ### economics
 
 - [[neoliberalism]] — the argument that market coordination outperforms central planning
