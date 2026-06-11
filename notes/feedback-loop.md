@@ -27,6 +27,7 @@ the key elements are: a **target** (what the system is trying to achieve), a **m
 - [[science]] — the scientific method as a loop that corrects models against reality
 - [[buddhism]] — craving as a self-reinforcing positive loop with no setpoint
 - [[capitalism]] — profit and loss as the signal; competition as the feedback mechanism
+- [[react]] — state change drives a re-render, and reconciliation corrects the screen back to the state
 - [[coupling]]
 
 #domain/engineering #pattern/feedback-loop #pattern/control

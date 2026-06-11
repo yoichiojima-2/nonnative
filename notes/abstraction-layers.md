@@ -30,6 +30,7 @@ three ideas make this work:
 - [[philosophy]] — its branches as a layered structure: metaphysics under epistemology under logic under ethics
 - [[science]] — a theory as an abstraction with a documented operating range
 - [[turing-machine]] — the layer that separates software from hardware
+- [[react]] — components hide their internals behind a small declarative surface
 - [[coupling]]
 
 #domain/computer-science #pattern/abstraction-layers #pattern/modularity
