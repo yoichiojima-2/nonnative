@@ -1,7 +1,9 @@
 "use client";
-// A small dependency-free force-directed graph on a canvas. Nodes are notes,
-// edges are wikilinks. Drag to rearrange, scroll/pinch to zoom, click/tap a
-// node to open it. Pass `focus` to show just one note and its neighbours.
+// A small dependency-free force-directed graph on a canvas, drawn as a night
+// sky: notes are stars (sized by how connected they are), wikilinks are
+// constellation lines, and the vault's domains tint the nebulae drifting
+// behind them. Drag to rearrange, scroll/pinch to zoom, click/tap a star to
+// open the note. Pass `focus` to show just one note and its neighbours.
 import { useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { GraphEdge, GraphNode } from "@/lib/notes";
@@ -10,16 +12,23 @@ import type { GraphEdge, GraphNode } from "@/lib/notes";
 // order, so the palette needs no per-vault configuration.
 const COLORS = ["#7aa2f7", "#bb9af7", "#7dcfff", "#9ece6a", "#e0af68", "#f7768e", "#ff9e64", "#b4f9f8"];
 const FALLBACK = "#9aa5ce";
+// the sky ignores the site theme on purpose: the graph reads as a window
+// into space, so it stays dark even in light mode.
+const SKY = ["#10142b", "#0a0c1d", "#05060f"];
+const STAR_TINTS = ["#ffffff", "#cdd6ff", "#ffe9c4", "#dff6ff"];
+
+const rgba = (hex: string, a: number) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+};
 
 interface SimNode extends GraphNode {
   x: number;
   y: number;
   vx: number;
   vy: number;
+  phase: number; // per-star twinkle offset so they don't pulse in unison
 }
-
-const cssVar = (name: string, fallback: string) =>
-  getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
 export default function Graph({
   nodes: rawNodes,
@@ -46,7 +55,14 @@ export default function Graph({
     const ctx = canvas.getContext("2d")!;
 
     // copy data; if focused, keep only the note and its neighbours
-    let nodes: SimNode[] = rawNodes.map((n) => ({ ...n, x: 0, y: 0, vx: 0, vy: 0 }));
+    let nodes: SimNode[] = rawNodes.map((n) => ({
+      ...n,
+      x: 0,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      phase: Math.random() * Math.PI * 2,
+    }));
     let edges = rawEdges.map((e) => ({ ...e }));
     if (focus) {
       const keep = new Set([focus]);
@@ -70,6 +86,32 @@ export default function Graph({
       n.x = W() / 2 + Math.cos(a) * spread + (Math.random() - 0.5) * 30;
       n.y = H() / 2 + Math.sin(a) * spread + (Math.random() - 0.5) * 30;
     });
+
+    // distant background stars live in screen space; `depth` makes them pan
+    // slower than the graph so the sky gains parallax.
+    const dust = Array.from({ length: 150 }, () => ({
+      u: Math.random(),
+      v: Math.random(),
+      depth: 0.1 + Math.random() * 0.45,
+      r: 0.3 + Math.random() ** 2 * 1.3,
+      tint: STAR_TINTS[(Math.random() * STAR_TINTS.length) | 0],
+      base: 0.25 + Math.random() * 0.6,
+      speed: 0.0004 + Math.random() * 0.0012,
+      phase: Math.random() * Math.PI * 2,
+    }));
+    // one faint nebula per domain, parked in world space so it moves with the
+    // constellation when panning and zooming.
+    const nebulae = [...new Set(nodes.map((n) => colorFor(n.domain)))]
+      .slice(0, 4)
+      .map((color, i, all) => ({
+        color,
+        x: W() / 2 + Math.cos((i / all.length) * Math.PI * 2 + 0.8) * spread,
+        y: H() / 2 + Math.sin((i / all.length) * Math.PI * 2 + 0.8) * spread * 0.7,
+        r: spread * (1.2 + Math.random() * 0.6),
+        phase: Math.random() * Math.PI * 2,
+      }));
+    let meteor: { x: number; y: number; vx: number; vy: number; life: number } | null = null;
+    let nextMeteor = -1;
 
     const view = { x: 0, y: 0, k: focus ? 1 : 0.85 };
     let hover: SimNode | null = null;
@@ -170,10 +212,77 @@ export default function Graph({
       alpha *= 0.992;
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, W(), H());
-      const edgeCol = cssVar("--graph-edge", "rgba(140,150,190,.22)");
-      const labelCol = cssVar("--graph-label", "#8a92b2");
+    function drawSky(t: number) {
+      const w = W();
+      const h = H();
+      const sky = ctx.createRadialGradient(w * 0.5, h * 0.35, 0, w * 0.5, h * 0.5, Math.max(w, h) * 0.85);
+      sky.addColorStop(0, SKY[0]);
+      sky.addColorStop(0.55, SKY[1]);
+      sky.addColorStop(1, SKY[2]);
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, w, h);
+
+      // everything luminous is drawn additively so overlapping glows brighten
+      ctx.globalCompositeOperation = "lighter";
+      nebulae.forEach((nb) => {
+        const s = toScreen({
+          x: nb.x + Math.cos(t * 0.00012 + nb.phase) * 30,
+          y: nb.y + Math.sin(t * 0.00009 + nb.phase) * 22,
+        });
+        const R = nb.r * view.k;
+        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, R);
+        g.addColorStop(0, rgba(nb.color, 0.07));
+        g.addColorStop(1, rgba(nb.color, 0));
+        ctx.fillStyle = g;
+        ctx.fillRect(s.x - R, s.y - R, R * 2, R * 2);
+      });
+      dust.forEach((d) => {
+        const px = (((d.u * w + view.x * d.depth) % w) + w) % w;
+        const py = (((d.v * h + view.y * d.depth) % h) + h) % h;
+        ctx.fillStyle = rgba(d.tint, d.base * (0.55 + 0.45 * Math.sin(t * d.speed + d.phase)));
+        ctx.beginPath();
+        ctx.arc(px, py, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (nextMeteor < 0) nextMeteor = t + 3000 + Math.random() * 5000;
+      if (!meteor && t > nextMeteor) {
+        const a = Math.PI * (0.12 + Math.random() * 0.25);
+        meteor = {
+          x: Math.random() * w * 0.7,
+          y: Math.random() * h * 0.35,
+          vx: Math.cos(a) * 9,
+          vy: Math.sin(a) * 9,
+          life: 1,
+        };
+      }
+      if (meteor) {
+        meteor.x += meteor.vx;
+        meteor.y += meteor.vy;
+        meteor.life -= 0.02;
+        const tail = 13;
+        const g = ctx.createLinearGradient(
+          meteor.x, meteor.y,
+          meteor.x - meteor.vx * tail, meteor.y - meteor.vy * tail,
+        );
+        g.addColorStop(0, `rgba(255,255,255,${0.9 * meteor.life})`);
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(meteor.x, meteor.y);
+        ctx.lineTo(meteor.x - meteor.vx * tail, meteor.y - meteor.vy * tail);
+        ctx.stroke();
+        if (meteor.life <= 0 || meteor.x > w + 60 || meteor.y > h + 60) {
+          meteor = null;
+          nextMeteor = t + 6000 + Math.random() * 10000;
+        }
+      }
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    function draw(t: number) {
+      drawSky(t);
       const neigh = new Set<string>();
       if (hover) {
         neigh.add(hover.id);
@@ -182,12 +291,19 @@ export default function Graph({
           if (e.target === hover!.id) neigh.add(e.source);
         });
       }
+      // constellation lines fade between the colors of the stars they join
       edges.forEach((e) => {
-        const a = toScreen(byId[e.source]);
-        const b = toScreen(byId[e.target]);
+        const na = byId[e.source];
+        const nb = byId[e.target];
+        const a = toScreen(na);
+        const b = toScreen(nb);
         const on = hover && (e.source === hover.id || e.target === hover.id);
-        ctx.strokeStyle = on ? "rgba(122,162,247,.85)" : edgeCol;
-        ctx.lineWidth = on ? 1.6 : 0.8;
+        const lum = on ? 0.85 : hover ? 0.06 : 0.3;
+        const g = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+        g.addColorStop(0, rgba(colorFor(na.domain), lum));
+        g.addColorStop(1, rgba(colorFor(nb.domain), lum));
+        ctx.strokeStyle = g;
+        ctx.lineWidth = on ? 1.6 : 0.9;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -197,32 +313,70 @@ export default function Graph({
       nodes.forEach((n) => {
         const s = toScreen(n);
         const r = radius(n) * view.k;
+        const color = colorFor(n.domain);
         const dim = hover && !neigh.has(n.id);
-        ctx.globalAlpha = dim ? 0.22 : 1;
-        ctx.fillStyle = colorFor(n.domain);
+        const tw = 0.8 + 0.2 * Math.sin(t * 0.0016 + n.phase);
+        ctx.globalAlpha = dim ? 0.15 : 1;
+
+        ctx.globalCompositeOperation = "lighter";
+        const halo = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * 4);
+        halo.addColorStop(0, rgba(color, 0.38 * tw));
+        halo.addColorStop(1, rgba(color, 0));
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, r * 4, 0, Math.PI * 2);
+        ctx.fill();
+        // diffraction spikes on the brightest (most-connected) stars
+        if ((n.degree || 0) >= 3 || n === hover || n.id === focus) {
+          const len = r * (2.4 + 0.6 * tw);
+          ctx.strokeStyle = rgba(color, (n === hover ? 0.8 : 0.4) * tw);
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(s.x - len, s.y);
+          ctx.lineTo(s.x + len, s.y);
+          ctx.moveTo(s.x, s.y - len);
+          ctx.lineTo(s.x, s.y + len);
+          ctx.stroke();
+        }
+        ctx.globalCompositeOperation = "source-over";
+
+        // core: white-hot centre cooling to the domain color at the rim
+        const core = ctx.createRadialGradient(s.x - r * 0.25, s.y - r * 0.25, 0, s.x, s.y, r);
+        core.addColorStop(0, "#ffffff");
+        core.addColorStop(0.5, rgba(color, 1));
+        core.addColorStop(1, rgba(color, 0.85));
+        ctx.fillStyle = core;
         ctx.beginPath();
         ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
         ctx.fill();
         if (n.id === focus) {
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = "#fff";
+          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = "rgba(255,255,255,.85)";
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, r + 3.5 + Math.sin(t * 0.004) * 1.2, 0, Math.PI * 2);
+          ctx.stroke();
+        } else if (n === hover) {
+          ctx.lineWidth = 1.2;
+          ctx.strokeStyle = rgba(color, 0.7);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, r + 4 + Math.sin(t * 0.005) * 1.5, 0, Math.PI * 2);
           ctx.stroke();
         }
         if (showAll || n === hover || n.id === focus) {
-          ctx.globalAlpha = dim ? 0.3 : 1;
-          ctx.fillStyle = labelCol;
+          ctx.globalAlpha = dim ? 0.25 : 1;
+          ctx.fillStyle = n === hover ? "#e8ecff" : "#9aa3c7";
           ctx.font = '600 11px -apple-system, "Segoe UI", sans-serif';
           ctx.textAlign = "center";
           ctx.textBaseline = "top";
-          ctx.fillText(n.title, s.x, s.y + r + 3);
+          ctx.fillText(n.title, s.x, s.y + r + 4);
         }
         ctx.globalAlpha = 1;
       });
     }
 
-    function frame() {
+    function frame(t: number) {
       step();
-      draw();
+      draw(t);
       raf = requestAnimationFrame(frame);
     }
 
@@ -309,7 +463,7 @@ export default function Graph({
     window.addEventListener("resize", resize);
 
     resize();
-    frame();
+    raf = requestAnimationFrame(frame);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
