@@ -44,9 +44,12 @@ export default function Markdown({
             );
           },
           img({ src = "", alt }) {
+            const s = String(src);
+            // absolute URLs (e.g. hotlinked wikimedia images) are already
+            // complete — only local asset paths need the basePath prefix.
             return (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={withBase(String(src))} alt={alt ?? ""} loading="lazy" />
+              <img src={s.startsWith("http") ? s : withBase(s)} alt={alt ?? ""} loading="lazy" />
             );
           },
         }}
