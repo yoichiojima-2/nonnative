@@ -84,7 +84,7 @@ export default function Graph({
     const alphaCap = 1;
     let raf = 0;
 
-    const radius = (n: SimNode) => 4 + Math.sqrt(n.degree || 1) * 2.1;
+    const radius = (n: SimNode) => 1.6 + Math.sqrt(n.degree || 1) * 1.1;
     const toScreen = (n: { x: number; y: number }) => ({
       x: (n.x - W() / 2) * view.k + W() / 2 + view.x,
       y: (n.y - H() / 2) * view.k + H() / 2 + view.y,
@@ -96,7 +96,7 @@ export default function Graph({
     function nodeAt(px: number, py: number) {
       for (let i = nodes.length - 1; i >= 0; i--) {
         const s = toScreen(nodes[i]);
-        const r = radius(nodes[i]) * view.k + 4;
+        const r = radius(nodes[i]) * view.k + 10;
         if ((px - s.x) ** 2 + (py - s.y) ** 2 <= r * r) return nodes[i];
       }
       return null;
@@ -210,7 +210,9 @@ export default function Graph({
         ctx.stroke();
         ctx.globalAlpha = 1;
       });
-      const showAll = view.k > 0.95 || nodes.length <= 14;
+      // labels are always drawn: on touch screens there's no hover, so every
+      // dot needs its title visible to be identifiable.
+      const showAll = true;
       nodes.forEach((n) => {
         const s = toScreen(n);
         const r = radius(n) * view.k;
