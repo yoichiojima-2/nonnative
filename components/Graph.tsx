@@ -234,7 +234,7 @@ export default function Graph({
         if (showAll || n === hover || n.id === focus) {
           ctx.globalAlpha = dim ? 0.3 : 1;
           ctx.fillStyle = n === hover || n.id === focus ? textCol : labelCol;
-          ctx.font = '600 9.5px ui-monospace, "SF Mono", Menlo, Consolas, monospace';
+          ctx.font = '600 8px ui-monospace, "SF Mono", Menlo, Consolas, monospace';
           ctx.letterSpacing = "0.08em";
           ctx.textAlign = "center";
           ctx.textBaseline = "top";
