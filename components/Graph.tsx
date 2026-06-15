@@ -66,14 +66,14 @@ export default function Graph({
     const H = () => canvas.clientHeight;
     // spread the starting ring so nodes don't begin on top of each other —
     // tightly packed nodes generate enormous repulsion on the first frames.
-    const spread = Math.max(130, nodes.length * 9);
+    const spread = Math.max(180, nodes.length * 13);
     nodes.forEach((n, i) => {
       const a = (i / Math.max(nodes.length, 1)) * Math.PI * 2;
       n.x = W() / 2 + Math.cos(a) * spread + (Math.random() - 0.5) * 30;
       n.y = H() / 2 + Math.sin(a) * spread + (Math.random() - 0.5) * 30;
     });
 
-    const view = { x: 0, y: 0, k: focus ? 1 : 0.85 };
+    const view = { x: 0, y: 0, k: focus ? 1 : 0.7 };
     let hover: SimNode | null = null;
     let drag: SimNode | null = null;
     let panning = false;
@@ -128,7 +128,7 @@ export default function Graph({
           let dy = a.y - b.y;
           const d2 = dx * dx + dy * dy + 0.01;
           const d = Math.sqrt(d2);
-          const f = (2600 / d2) * alpha;
+          const f = (4800 / d2) * alpha;
           dx /= d;
           dy /= d;
           a.vx += dx * f;
@@ -143,7 +143,7 @@ export default function Graph({
         let dx = b.x - a.x;
         let dy = b.y - a.y;
         const d = Math.sqrt(dx * dx + dy * dy) || 0.01;
-        const f = (d - 95) * 0.012 * alpha;
+        const f = (d - 140) * 0.012 * alpha;
         dx /= d;
         dy /= d;
         a.vx += dx * f;
@@ -155,8 +155,8 @@ export default function Graph({
       // canvas — this is what keeps the opening frames calm.
       const maxV = 14;
       nodes.forEach((n) => {
-        n.vx += (cx - n.x) * 0.004 * alpha;
-        n.vy += (cy - n.y) * 0.004 * alpha;
+        n.vx += (cx - n.x) * 0.003 * alpha;
+        n.vy += (cy - n.y) * 0.003 * alpha;
         n.vx *= 0.86;
         n.vy *= 0.86;
         const speed = Math.hypot(n.vx, n.vy);
