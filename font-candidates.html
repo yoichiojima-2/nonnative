@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Font candidates · nonnative</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Hanken+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=Instrument+Serif&family=Libre+Franklin:wght@400;500;600&family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1a1b26; --bg-elev:#1f2130; --bg-soft:#24283b; --border:#2c3047;
+    --text:#c0caf5; --text-dim:#8a92b2; --text-faint:#565f89;
+    --accent:#7aa2f7; --link:#7dcfff; --tag-bg:rgba(122,162,247,.12); --tag-text:#9aa5ce;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:Inter,system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;
+    padding:48px 24px 96px}
+  .wrap{max-width:860px;margin:0 auto}
+  .lede{color:var(--text-dim);max-width:60ch;margin:0 0 40px}
+  .lede h1{font-family:'Space Grotesk',sans-serif;color:var(--text);font-size:1.9rem;
+    letter-spacing:-.03em;margin:0 0 .3em}
+  .card{background:var(--bg-elev);border:1px solid var(--border);border-radius:14px;
+    padding:26px 28px;margin:0 0 22px}
+  .meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    margin:0 0 18px;border-bottom:1px solid var(--border);padding-bottom:12px}
+  .meta .name{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--accent)}
+  .meta .pair{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--text-faint)}
+  .brand{font-weight:600;letter-spacing:-.02em;color:var(--text);font-size:1.05rem;margin:0 0 14px}
+  .brand::before{content:"◆ ";color:var(--accent);font-size:.7em;vertical-align:1px}
+  .h1{font-weight:600;letter-spacing:-.03em;font-size:2.05rem;margin:0 0 .15em;color:var(--text)}
+  .h2{font-weight:600;letter-spacing:-.02em;font-size:1.3rem;margin:.9em 0 .35em;color:var(--text)}
+  .body{color:var(--text);margin:0 0 10px}
+  .body a{color:var(--accent);border-bottom:1px solid transparent}
+  .dim{color:var(--text-dim);font-size:.92rem;margin:.2em 0 0}
+  .tags{margin-top:14px}
+  .tag{display:inline-block;background:var(--tag-bg);color:var(--tag-text);
+    padding:1px 9px;border-radius:20px;font-size:.78rem;margin:0 4px 0 0}
+  code{background:#16161e;padding:.12em .4em;border-radius:5px;font-size:.85em;
+    font-family:'IBM Plex Mono',monospace}
+
+  /* ── pairing definitions ─────────────────────────── */
+  /* 0 current */
+  .f-current .h1,.f-current .h2,.f-current .brand{font-family:'Space Grotesk',sans-serif}
+  .f-current .body,.f-current .dim{font-family:Inter,sans-serif}
+  /* 1 fraunces */
+  .f-fraunces .h1,.f-fraunces .h2,.f-fraunces .brand{font-family:Fraunces,serif;font-weight:600}
+  .f-fraunces .body,.f-fraunces .dim{font-family:Inter,sans-serif}
+  /* 2 bricolage */
+  .f-bricolage .h1,.f-bricolage .h2,.f-bricolage .brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:700}
+  .f-bricolage .body,.f-bricolage .dim{font-family:Inter,sans-serif}
+  /* 3 newsreader (serif everything — literary) */
+  .f-newsreader .h1,.f-newsreader .h2,.f-newsreader .brand{font-family:Newsreader,serif;font-weight:600}
+  .f-newsreader .body,.f-newsreader .dim{font-family:Newsreader,serif}
+  /* 4 sora + source serif */
+  .f-sora .h1,.f-sora .h2,.f-sora .brand{font-family:Sora,sans-serif;font-weight:600}
+  .f-sora .body,.f-sora .dim{font-family:'Source Serif 4',serif}
+  /* 5 instrument serif + hanken */
+  .f-instrument .h1,.f-instrument .h2,.f-instrument .brand{font-family:'Instrument Serif',serif;font-weight:400}
+  .f-instrument .body,.f-instrument .dim{font-family:'Hanken Grotesk',sans-serif}
+  /* 6 space mono + libre franklin (editorial/techy) */
+  .f-mono .h1,.f-mono .h2,.f-mono .brand{font-family:'Space Mono',monospace;font-weight:700;letter-spacing:-.01em}
+  .f-mono .body,.f-mono .dim{font-family:'Libre Franklin',sans-serif}
+  /* 7 IBM Plex pair */
+  .f-plex .h1,.f-plex .h2,.f-plex .brand{font-family:'IBM Plex Sans',sans-serif;font-weight:600}
+  .f-plex .body,.f-plex .dim{font-family:'IBM Plex Sans',sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lede">
+    <h1>Font candidates</h1>
+    <p>Each card mocks the real site chrome — brand mark, an H1, an H2, body prose with a
+    link and inline <code>code</code>, and tag chips — on the actual dark theme. Pick a number.</p>
+  </div>
+
+  <!-- template repeated per pairing -->
+  <!-- 0 -->
+  <section class="card f-current">
+    <div class="meta"><span class="name">0 · current</span><span class="pair">Space Grotesk + Inter</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">The body carries quiet, legible text while headings get a little geometric character. <a>Wikilinks</a> stay readable, and <code>monospace</code> sits inline.</p>
+    <p class="dim">Clean and neutral — the current baseline.</p>
+    <div class="tags"><span class="tag">#baseline</span><span class="tag">#neutral</span></div>
+  </section>
+
+  <!-- 1 -->
+  <section class="card f-fraunces">
+    <div class="meta"><span class="name">1 · editorial</span><span class="pair">Fraunces + Inter</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">High-contrast “old-style” display serif with soft, almost wonky details. Gives the site a confident magazine-cover feel while keeping Inter for calm reading. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">Stylish, literary, a touch fancy. My top pick.</p>
+    <div class="tags"><span class="tag">#editorial</span><span class="tag">#characterful</span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card f-bricolage">
+    <div class="meta"><span class="name">2 · contemporary</span><span class="pair">Bricolage Grotesque + Inter</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">A trendy, slightly quirky grotesque — tight and modern, the “2024 design-studio” look. Distinct but not loud. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">Modern and design-forward without going serif.</p>
+    <div class="tags"><span class="tag">#modern</span><span class="tag">#grotesque</span></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="card f-newsreader">
+    <div class="meta"><span class="name">3 · literary</span><span class="pair">Newsreader (all)</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">Serif throughout — optical-size aware, made for long reading. Turns the vault into something that feels like a published essay or journal. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">Warm and bookish. Best if reading is the point.</p>
+    <div class="tags"><span class="tag">#literary</span><span class="tag">#serif</span></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card f-sora">
+    <div class="meta"><span class="name">4 · mixed</span><span class="pair">Sora + Source Serif 4</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">Geometric sans headings over a refined serif body — the inverse of today. Feels considered and editorial while staying crisp up top. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">Sans display, serif reading. Balanced and grown-up.</p>
+    <div class="tags"><span class="tag">#mixed</span><span class="tag">#balanced</span></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="card f-instrument">
+    <div class="meta"><span class="name">5 · elegant</span><span class="pair">Instrument Serif + Hanken Grotesk</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">A tall, delicate display serif for headings against a clean humanist sans. Very current, very “art-book”. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">The most stylish / fashion-forward option.</p>
+    <div class="tags"><span class="tag">#elegant</span><span class="tag">#display</span></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="card f-mono">
+    <div class="meta"><span class="name">6 · techy</span><span class="pair">Space Mono + Libre Franklin</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">Monospaced headings give a terminal / zettelkasten signal that suits a notes engine, with a neutral sans for reading. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">Nerdy, on-brand for a knowledge vault.</p>
+    <div class="tags"><span class="tag">#techy</span><span class="tag">#mono</span></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="card f-plex">
+    <div class="meta"><span class="name">7 · understated</span><span class="pair">IBM Plex Sans (all)</span></div>
+    <p class="brand">nonnative</p>
+    <p class="h1">an obsidian vault, published</p>
+    <p class="h2">Notes that link to each other</p>
+    <p class="body">One well-engineered family for everything — quietly distinctive, slightly mechanical. Cohesive and low-risk. <a>Wikilinks</a> + <code>monospace</code>.</p>
+    <p class="dim">Safe upgrade if you want subtle, not dramatic.</p>
+    <div class="tags"><span class="tag">#understated</span><span class="tag">#cohesive</span></div>
+  </section>
+</div>
+</body>
+</html>
