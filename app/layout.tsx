@@ -1,18 +1,19 @@
 import "./globals.css";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Jost } from "next/font/google";
 import SiteChrome from "@/components/SiteChrome";
 import { getSearchDocs } from "@/lib/notes";
 import siteConfig from "@/site.config";
 
-// Self-hosted at build time (works with output: "export"): Inter carries the
-// body — quiet, highly legible — while Space Grotesk gives headings and the
-// brand a little geometric character without breaking the minimal feel.
-const sans = Inter({
+// Self-hosted at build time (works with output: "export"). Jost is a geometric
+// variable font (Futura lineage) used for both body and display; the full
+// weight axis loads so globals.css can lean on light weights for an airy,
+// architectural feel. Both --font-sans and --font-display point at it.
+const sans = Jost({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
 });
-const display = Space_Grotesk({
+const display = Jost({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-display",
