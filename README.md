@@ -14,7 +14,7 @@ experience on GitHub Pages.
 - **backlinks** on every note
 - an interactive **graph view** (global + per-note local)
 - an Obsidian-style **quick-switcher search** (fuzzy, keyboard-driven)
-- mobile bottom-nav layout; light/dark theme follows the system
+- mobile bottom-nav layout; light/dark theme (follows the system, manual toggle)
 
 ## using this engine for your own vault
 
